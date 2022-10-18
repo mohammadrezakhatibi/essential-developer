@@ -41,11 +41,15 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
                         imageURL: imageURL(at: index))
     }
     
-    private func getFeedResult() -> LoadFeedResult? {
+    private func getFeedResult(file: StaticString = #filePath,
+                               line: UInt = #line) -> LoadFeedResult? {
         let url = URL(string: "https://lokomond.com/essential-feed/feed.json")!
         let client = URLSessionHTTPClient()
         let loader = RemoteFeedLoader(url: url, client: client)
-            
+        
+        trackForeMemoryLeak(loader, file: file, line: line)
+        trackForeMemoryLeak(client, file: file, line: line)
+        
         let exp = expectation(description: "Wait for load completion")
         
         var receivedResult: LoadFeedResult?
