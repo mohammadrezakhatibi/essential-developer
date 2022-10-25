@@ -30,44 +30,12 @@ class LocalFeedLoader {
 
 }
 
-class FeedStore {
-    
+public protocol FeedStore {
     typealias DeletionCompletion = (Error?) -> Void
-    var deletionCompletions = [(Error?) -> Void]()
-    var insertionCompletions = [(Error?) -> Void]()
+    typealias InsertionCompletion = (Error?) -> Void
     
-    enum ReceivedMessage: Equatable {
-        case deleteCachedFeed
-        case insert(items: [FeedItem], timestamp: Date)
-    }
-    
-    private(set) var receivedMessages = [ReceivedMessage]()
-    
-    func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-        deletionCompletions.append(completion)
-        receivedMessages.append(.deleteCachedFeed)
-    }
-    
-    func insert(_ items: [FeedItem], timestamp: Date, completion: @escaping (Error?) -> Void) {
-        receivedMessages.append(.insert(items: items, timestamp: timestamp))
-        insertionCompletions.append(completion)
-    }
-    
-    func completeDeletion(with error: Error, at index: Int = 0) {
-        deletionCompletions[index](error)
-    }
-    
-    func completeDeletionSuccessfully(at index: Int = 0) {
-        deletionCompletions[index](nil)
-    }
-    
-    func completeInsertion(with error: Error, at index: Int = 0) {
-        insertionCompletions[index](error)
-    }
-    
-    func completeInsertionSuccessfully(at index: Int = 0) {
-        insertionCompletions[index](nil)
-    }
+    func deleteCachedFeed(completion: @escaping DeletionCompletion)
+    func insert(_ items: [FeedItem], timestamp: Date, completion: @escaping InsertionCompletion)
 }
 
 final class CacheFeedUseCaseTest: XCTestCase {
@@ -143,8 +111,8 @@ final class CacheFeedUseCaseTest: XCTestCase {
         
     // MARK: Helpers
     
-    func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStore) {
-        let store = FeedStore()
+    private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
+        let store = FeedStoreSpy()
         let sut = LocalFeedLoader(store: store, currentDate: currentDate)
         trackForeMemoryLeak(store, file: file, line: line)
         trackForeMemoryLeak(sut, file: file, line: line)
@@ -165,6 +133,46 @@ final class CacheFeedUseCaseTest: XCTestCase {
         
         XCTAssertEqual(receivedError as? NSError, expectedError, file: file, line: line)
     }
+    
+    private class FeedStoreSpy: FeedStore {
+        
+        var deletionCompletions = [(Error?) -> Void]()
+        var insertionCompletions = [(Error?) -> Void]()
+        
+        enum ReceivedMessage: Equatable {
+            case deleteCachedFeed
+            case insert(items: [FeedItem], timestamp: Date)
+        }
+        
+        private(set) var receivedMessages = [ReceivedMessage]()
+        
+        func deleteCachedFeed(completion: @escaping DeletionCompletion) {
+            deletionCompletions.append(completion)
+            receivedMessages.append(.deleteCachedFeed)
+        }
+        
+        func insert(_ items: [FeedItem], timestamp: Date, completion: @escaping InsertionCompletion) {
+            receivedMessages.append(.insert(items: items, timestamp: timestamp))
+            insertionCompletions.append(completion)
+        }
+        
+        func completeDeletion(with error: Error, at index: Int = 0) {
+            deletionCompletions[index](error)
+        }
+        
+        func completeDeletionSuccessfully(at index: Int = 0) {
+            deletionCompletions[index](nil)
+        }
+        
+        func completeInsertion(with error: Error, at index: Int = 0) {
+            insertionCompletions[index](error)
+        }
+        
+        func completeInsertionSuccessfully(at index: Int = 0) {
+            insertionCompletions[index](nil)
+        }
+    }
+    
     
     func uniqueItem() -> FeedItem {
         return FeedItem(id: UUID(), description: "a description", location: "a location", imageURL: anyURL())
