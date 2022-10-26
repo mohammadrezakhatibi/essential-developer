@@ -12,7 +12,7 @@
 		D734DA0828F80C860092A4B7 /* RemoteFeedLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734DA0728F80C860092A4B7 /* RemoteFeedLoaderTests.swift */; };
 		D734DA0B28F8153B0092A4B7 /* RemoteFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734DA0A28F8153B0092A4B7 /* RemoteFeedLoader.swift */; };
 		D7559BF828F7FE7F001154DF /* EssentialFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7559BEF28F7FE7E001154DF /* EssentialFeed.framework */; };
-		D7559C0828F7FEB5001154DF /* FeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7559C0728F7FEB5001154DF /* FeedItem.swift */; };
+		D7559C0828F7FEB5001154DF /* FeedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7559C0728F7FEB5001154DF /* FeedImage.swift */; };
 		D7559C0A28F7FFEC001154DF /* FeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7559C0928F7FFEC001154DF /* FeedLoader.swift */; };
 		D75F1DEF28FE9BA000C04888 /* URLSessionHTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75F1DEE28FE9BA000C04888 /* URLSessionHTTPClient.swift */; };
 		D75F1DF728FECA7000C04888 /* EssentialFeedAPIEndToEndTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75F1DF628FECA7000C04888 /* EssentialFeedAPIEndToEndTests.swift */; };
@@ -24,7 +24,7 @@
 		D7E48945290934E300A9A24E /* LocalFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E48944290934E300A9A24E /* LocalFeedLoader.swift */; };
 		D7E489472909354900A9A24E /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E489462909354900A9A24E /* FeedStore.swift */; };
 		D7E4894929095A7500A9A24E /* RemoteFeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E4894829095A7500A9A24E /* RemoteFeedItem.swift */; };
-		D7E4894B29095ABE00A9A24E /* LocalFeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E4894A29095ABE00A9A24E /* LocalFeedItem.swift */; };
+		D7E4894B29095ABE00A9A24E /* LocalFeedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E4894A29095ABE00A9A24E /* LocalFeedImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,7 +51,7 @@
 		D734DA0A28F8153B0092A4B7 /* RemoteFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedLoader.swift; sourceTree = "<group>"; };
 		D7559BEF28F7FE7E001154DF /* EssentialFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7559BF728F7FE7F001154DF /* EssentialFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7559C0728F7FEB5001154DF /* FeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItem.swift; sourceTree = "<group>"; };
+		D7559C0728F7FEB5001154DF /* FeedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImage.swift; sourceTree = "<group>"; };
 		D7559C0928F7FFEC001154DF /* FeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoader.swift; sourceTree = "<group>"; };
 		D75F1DEE28FE9BA000C04888 /* URLSessionHTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionHTTPClient.swift; sourceTree = "<group>"; };
 		D75F1DF428FECA7000C04888 /* EssentialFeedAPIEndToEndTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialFeedAPIEndToEndTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,7 +62,7 @@
 		D7E48944290934E300A9A24E /* LocalFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedLoader.swift; sourceTree = "<group>"; };
 		D7E489462909354900A9A24E /* FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStore.swift; sourceTree = "<group>"; };
 		D7E4894829095A7500A9A24E /* RemoteFeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteFeedItem.swift; path = ../../../../Desktop/RemoteFeedItem.swift; sourceTree = "<group>"; };
-		D7E4894A29095ABE00A9A24E /* LocalFeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedItem.swift; sourceTree = "<group>"; };
+		D7E4894A29095ABE00A9A24E /* LocalFeedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,7 +147,7 @@
 		D7559C0D28F80110001154DF /* Feed Feature */ = {
 			isa = PBXGroup;
 			children = (
-				D7559C0728F7FEB5001154DF /* FeedItem.swift */,
+				D7559C0728F7FEB5001154DF /* FeedImage.swift */,
 				D7559C0928F7FFEC001154DF /* FeedLoader.swift */,
 			);
 			path = "Feed Feature";
@@ -191,7 +191,7 @@
 			children = (
 				D7E48944290934E300A9A24E /* LocalFeedLoader.swift */,
 				D7E489462909354900A9A24E /* FeedStore.swift */,
-				D7E4894A29095ABE00A9A24E /* LocalFeedItem.swift */,
+				D7E4894A29095ABE00A9A24E /* LocalFeedImage.swift */,
 			);
 			path = "Feed Cache";
 			sourceTree = "<group>";
@@ -338,11 +338,11 @@
 				D7559C0A28F7FFEC001154DF /* FeedLoader.swift in Sources */,
 				D7E4894929095A7500A9A24E /* RemoteFeedItem.swift in Sources */,
 				D734DA0B28F8153B0092A4B7 /* RemoteFeedLoader.swift in Sources */,
-				D7E4894B29095ABE00A9A24E /* LocalFeedItem.swift in Sources */,
+				D7E4894B29095ABE00A9A24E /* LocalFeedImage.swift in Sources */,
 				D7E489472909354900A9A24E /* FeedStore.swift in Sources */,
 				D7E48945290934E300A9A24E /* LocalFeedLoader.swift in Sources */,
 				D705730B28F9880500B549BF /* HTTPClient.swift in Sources */,
-				D7559C0828F7FEB5001154DF /* FeedItem.swift in Sources */,
+				D7559C0828F7FEB5001154DF /* FeedImage.swift in Sources */,
 				D75F1DEF28FE9BA000C04888 /* URLSessionHTTPClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
