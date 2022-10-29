@@ -138,45 +138,6 @@ final class CacheFeedUseCaseTest: XCTestCase {
         XCTAssertEqual(receivedError as? NSError, expectedError, file: file, line: line)
     }
     
-    private class FeedStoreSpy: FeedStore {
-        
-        var deletionCompletions = [(Error?) -> Void]()
-        var insertionCompletions = [(Error?) -> Void]()
-        
-        enum ReceivedMessage: Equatable {
-            case deleteCachedFeed
-            case insert(items: [LocalFeedImage], timestamp: Date)
-        }
-        
-        private(set) var receivedMessages = [ReceivedMessage]()
-        
-        func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-            deletionCompletions.append(completion)
-            receivedMessages.append(.deleteCachedFeed)
-        }
-        
-        func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-            receivedMessages.append(.insert(items: feed, timestamp: timestamp))
-            insertionCompletions.append(completion)
-        }
-        
-        func completeDeletion(with error: Error, at index: Int = 0) {
-            deletionCompletions[index](error)
-        }
-        
-        func completeDeletionSuccessfully(at index: Int = 0) {
-            deletionCompletions[index](nil)
-        }
-        
-        func completeInsertion(with error: Error, at index: Int = 0) {
-            insertionCompletions[index](error)
-        }
-        
-        func completeInsertionSuccessfully(at index: Int = 0) {
-            insertionCompletions[index](nil)
-        }
-    }
-    
     private func uniqueImageFeed() -> (models: [FeedImage], local: [LocalFeedImage]) {
         let items = [uniqueImage(), uniqueImage()]
         let localItems = items.map { LocalFeedImage(id: $0.id, description: $0.description, location: $0.location, url: $0.url) }
