@@ -38,8 +38,8 @@ public final class LocalFeedLoader {
         }
     }
     
-    public func load() {
-        store.load()
+    public func load(completion: @escaping (Error?) -> Void) {
+        store.load(completion: completion)
     }
 }
 
