@@ -137,25 +137,4 @@ final class CacheFeedUseCaseTest: XCTestCase {
         
         XCTAssertEqual(receivedError as? NSError, expectedError, file: file, line: line)
     }
-    
-    private func uniqueImageFeed() -> (models: [FeedImage], local: [LocalFeedImage]) {
-        let items = [uniqueImage(), uniqueImage()]
-        let localItems = items.map { LocalFeedImage(id: $0.id, description: $0.description, location: $0.location, url: $0.url) }
-        
-        return (items, localItems)
-        
-    }
-    
-    func uniqueImage() -> FeedImage {
-        return FeedImage(id: UUID(), description: "a description", location: "a location", url: anyURL())
-    }
-    
-    private func anyURL() -> URL {
-        return URL(string: "http://a-url.com")!
-    }
-    
-    private func anyNSError() -> NSError {
-        return NSError(domain: "an error", code: 1)
-    }
-    
 }
