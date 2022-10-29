@@ -42,12 +42,11 @@ public final class LocalFeedLoader {
     public typealias LoadResult = LoadFeedResult
     
     public func load(completion: @escaping (LoadResult) -> Void) {
-        store.load { [weak self] result in
+        store.retrieve { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case let .failure(error):
-                self.store.deleteCachedFeed { _ in }
                 completion(.failure(error))
                 
             case let .found(feed, timestamp) where self.validate(timestamp):
@@ -72,6 +71,18 @@ public final class LocalFeedLoader {
             return false
         }
         return currentDate() < maxCacheAge
+    }
+    
+    public func validateCache() {
+        store.retrieve { [unowned self] result in
+            switch result {
+            case .failure(_):
+                self.store.deleteCachedFeed { _ in }
+                
+            default:
+                break
+            }
+        }
     }
 }
 
