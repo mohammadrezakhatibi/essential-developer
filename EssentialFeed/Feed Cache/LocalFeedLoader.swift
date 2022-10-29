@@ -13,7 +13,6 @@ public final class LocalFeedLoader {
     private let calendar = Calendar(identifier: .gregorian)
     
     public typealias SaveResult = Error?
-    public typealias LoadResult = LoadFeedResult
     
     public init(store: FeedStore, currentDate: @escaping () -> Date) {
         self.store = store
@@ -55,6 +54,8 @@ extension LocalFeedLoader {
 }
 
 extension LocalFeedLoader: FeedLoader {
+    public typealias LoadResult = LoadFeedResult
+    
     public func load(completion: @escaping (LoadResult) -> Void) {
         store.retrieve { [weak self] result in
             guard let self = self else { return }
