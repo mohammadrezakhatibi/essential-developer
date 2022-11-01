@@ -132,7 +132,7 @@ final class CodableFeedStoreTests: XCTestCase {
         
     }
     
-    func test_retrieve_overridePreviuslyInsertedCachedValue() {
+    func test_retrieve_overridePreviouslyInsertedCachedValue() {
         let sut = makeSUT()
         
         let firstInsertionError = insert((uniqueImageFeed().local, Date()), to: sut)
