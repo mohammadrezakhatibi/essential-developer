@@ -55,7 +55,7 @@ class CodableFeedStore {
         }
     }
     
-    func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping  FeedStore.InsertionCompletion) {
+    func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping FeedStore.InsertionCompletion) {
         do {
             let encoder = JSONEncoder()
             let encoded = try  encoder.encode(Cache(feed: feed.map(CodableFeedImage.init), timestamp: timestamp))
@@ -64,6 +64,10 @@ class CodableFeedStore {
         } catch {
             completion(error)
         }
+    }
+    
+    func deleteCachedFeed(completion: @escaping FeedStore.DeletionCompletion) {
+        completion(nil)
     }
 }
 
@@ -157,6 +161,19 @@ final class CodableFeedStoreTests: XCTestCase {
         XCTAssertNotNil(insertionError)
     }
     
+    func test_delete_hasNoSideEffectsOnEmptyCache() {
+        let sut = makeSUT()
+        let exp = expectation(description: "Wait for cache deletion")
+
+        sut.deleteCachedFeed { deletionError in
+            XCTAssertNil(deletionError, "Expected empty cache deletion to succeed")
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 1.0)
+
+        expect(sut, toRetrieve: .empty)
+    }
+    
     
     // MARK: - Helper
     private func makeSUT(storeURL: URL? = nil, file: StaticString = #filePath, line: UInt = #line) -> CodableFeedStore {
@@ -205,6 +222,7 @@ final class CodableFeedStoreTests: XCTestCase {
         wait(for: [exp], timeout: 1.0)
         return insertionError
     }
+    
     private func setupEmptyStoreState() {
         deleteStoreArtifacts()
     }
