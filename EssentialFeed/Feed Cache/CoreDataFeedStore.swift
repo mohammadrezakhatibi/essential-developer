@@ -5,7 +5,7 @@
 //  Created by mohammadreza on 11/1/22.
 //
 
-import Foundation
+import CoreData
 
 final public class CoreDataFeedStore: FeedStore {
     
@@ -23,4 +23,17 @@ final public class CoreDataFeedStore: FeedStore {
         
     }
     
+}
+
+private class ManagedCache: NSManagedObject {
+    @NSManaged var timestamp: Date
+    @NSManaged var feed: NSOrderedSet
+}
+
+private class ManagedFeedImage: NSManagedObject {
+    @NSManaged var id: UUID
+    @NSManaged var imageDescription: String?
+    @NSManaged var location: String?
+    @NSManaged var url: URL
+    @NSManaged var cache: ManagedCache
 }
