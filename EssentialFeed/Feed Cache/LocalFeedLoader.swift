@@ -2,7 +2,7 @@
 //  LocalFeedLoader.swift
 //  EssentialFeed
 //
-//  Created by mohammadreza on 10/27/22.
+//  Created by mohammadreza on 10/26/22.
 //
 
 import Foundation
@@ -11,57 +11,86 @@ public final class LocalFeedLoader {
     private let store: FeedStore
     private let currentDate: () -> Date
     
-    public typealias SaveResult = Error?
-    
     public init(store: FeedStore, currentDate: @escaping () -> Date) {
         self.store = store
         self.currentDate = currentDate
     }
+}
+
+extension LocalFeedLoader {
+    public typealias SaveResult = Error?
     
-    public func save(_ items: [FeedItem], completion: @escaping (SaveResult) -> Void) {
-        store.deletionCacheItems { [weak self] error in
+    public func save(_ feed: [FeedImage], completion: @escaping (SaveResult) -> Void) {
+        store.deleteCachedFeed { [weak self] error in
             guard let self = self else { return }
-            if let error {
-                completion(error)
-                
+            
+            if let cacheDeletionError = error {
+                completion(cacheDeletionError)
             } else {
-                self.cache(items, with: completion)
+                self.cache(feed, with: completion)
             }
+            
         }
     }
     
-    private func cache(_ items: [FeedItem], with completion: @escaping (SaveResult) -> Void) {
-        store.insert(items, timestamp: currentDate()) { [weak self] error in
+    private func cache(_ feed: [FeedImage], with completion: @escaping (SaveResult) -> Void) {
+        store.insert(feed.toLocal(), timestamp: currentDate()) { [weak self] error in
             guard self != nil else { return }
             completion(error)
         }
     }
+}
+
+extension LocalFeedLoader: FeedLoader {
+    public typealias LoadResult = LoadFeedResult
     
-    public typealias LoadResult = Result
-    
-    public enum Result {
-        case success([FeedItem])
-        case failure(Error?)
-    }
-    
-    public func load(completion: @escaping (Result) -> Void) {
-        store.retrieve { result in
+    public func load(completion: @escaping (LoadResult) -> Void) {
+        store.retrieve { [weak self] result in
+            guard let self = self else { return }
+            
             switch result {
-            case let .success(items):
-                completion(.success(items))
             case let .failure(error):
                 completion(.failure(error))
+                
+            case let .found(feed, timestamp) where FeedCachePolicy.validate(timestamp, against: self.currentDate()):
+                completion(.success(feed.toModels()))
+                
+            case .found, .empty:
+                completion(.success([]))
             }
         }
     }
 }
 
-public protocol FeedStore {
-    typealias DeletionCompletion = (Error?) -> Void
-    func deletionCacheItems(completion: @escaping DeletionCompletion)
-    
-    typealias InsertionCompletion = (Error?) -> Void
-    func insert(_ items: [FeedItem], timestamp: Date, completion: @escaping InsertionCompletion)
-    
-    func retrieve(completion: @escaping (LocalFeedLoader.LoadResult) -> Void)
+extension LocalFeedLoader {
+    public func validateCache() {
+        store.retrieve { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .failure(_):
+                self.store.deleteCachedFeed { _ in }
+                
+            case let .found(_, timestamp) where !FeedCachePolicy.validate(timestamp, against: self.currentDate()):
+                self.store.deleteCachedFeed { _ in }
+                
+            case .empty, .found: break
+            }
+        }
+    }
+}
+
+extension Array where Element == FeedImage {
+    func toLocal() -> [LocalFeedImage] {
+        return map {
+            return LocalFeedImage(id: $0.id, description: $0.description, location: $0.location, url: $0.url)
+        }
+    }
+}
+
+extension Array where Element == LocalFeedImage {
+    func toModels() -> [FeedImage] {
+        return map {
+            return FeedImage(id: $0.id, description: $0.description, location: $0.location, url: $0.url)
+        }
+    }
 }

@@ -1,26 +1,26 @@
 //
-//  FeedItem.swift
+//  RemoteFeedItem.swift
 //  EssentialFeed
 //
-//  Created by mohammadreza on 10/13/22.
+//  Created by Mohammadreza on 10/28/22.
 //
 
 import Foundation
 
-public struct FeedItem: Equatable {
+struct RemoteFeedItem: Decodable {
     
     public var id: UUID
     public var description: String?
     public var location: String?
-    public var imageURL: URL
+    public var image: URL
     
     public init(id: UUID,
                 description: String? = nil,
                 location: String? = nil,
-                imageURL: URL) {
+                image: URL) {
         self.id = id
         self.description = description
         self.location = location
-        self.imageURL = imageURL
+        self.image = image
     }
 }
