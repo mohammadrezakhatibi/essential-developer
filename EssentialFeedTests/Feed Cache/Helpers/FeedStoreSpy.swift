@@ -10,8 +10,8 @@ import EssentialFeed
 
 class FeedStoreSpy: FeedStore {
     
-    var deletionCompletions = [(Error?) -> Void]()
-    var insertionCompletions = [(Error?) -> Void]()
+    var deletionCompletions = [(DeletionResult) -> Void]()
+    var insertionCompletions = [(InsertionResult) -> Void]()
     var retrievalCompletions = [(RetrievalResult) -> Void]()
     
     enum ReceivedMessage: Equatable {
@@ -33,19 +33,19 @@ class FeedStoreSpy: FeedStore {
     }
     
     func completeDeletion(with error: Error, at index: Int = 0) {
-        deletionCompletions[index](error)
+        deletionCompletions[index](.failure(error))
     }
     
     func completeDeletionSuccessfully(at index: Int = 0) {
-        deletionCompletions[index](nil)
+        deletionCompletions[index](.success(()))
     }
     
     func completeInsertion(with error: Error, at index: Int = 0) {
-        insertionCompletions[index](error)
+        insertionCompletions[index](.failure(error))
     }
     
     func completeInsertionSuccessfully(at index: Int = 0) {
-        insertionCompletions[index](nil)
+        insertionCompletions[index](.success(()))
     }
     
     func retrieve(completion: @escaping RetrievalCompletion) {

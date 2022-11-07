@@ -127,8 +127,13 @@ final class CacheFeedUseCaseTest: XCTestCase {
         
         var receivedError: Error?
         
-        sut.save(uniqueImageFeed().models) { error in
-            receivedError = error
+        sut.save(uniqueImageFeed().models) { result in
+            switch result {
+            case let .failure(error):
+                receivedError = error
+            case .success:
+                break
+            }
             exp.fulfill()
         }
         
