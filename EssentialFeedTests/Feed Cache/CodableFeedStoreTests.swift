@@ -44,11 +44,11 @@ class CodableFeedStore {
     
     func retrieve(completion: @escaping FeedStore.RetrievalCompletion) {
         guard let data = try? Data(contentsOf: storeURL) else {
-            return completion(.empty)
+            return completion(.success(.empty))
         }
         let decoder = JSONDecoder()
         let cache = try! decoder.decode(Cache.self, from: data)
-        completion(.found(feed: cache.localFeed, timestamp: cache.timestamp))
+        completion(.success(.found(feed: cache.localFeed, timestamp: cache.timestamp)))
     }
     
     func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping  FeedStore.InsertionCompletion) {
@@ -79,7 +79,7 @@ final class CodableFeedStoreTests: XCTestCase {
         let exp = expectation(description: "Wait for retrieve completion")
         sut.retrieve { result in
             switch result {
-            case .empty:
+            case .success(.empty):
                 break
             default:
                 XCTFail("Expected empty result, got \(result) instead.")
@@ -97,7 +97,7 @@ final class CodableFeedStoreTests: XCTestCase {
         sut.retrieve { firstResult in
             sut.retrieve { secondResult in
                 switch (firstResult, secondResult) {
-                case (.empty, .empty):
+                case (.success(.empty), .success(.empty)):
                     break
                 default:
                     XCTFail("Expected retrieving twice from empty cache to deliver same empty result, got \(firstResult) and \(secondResult) instead.")
@@ -120,7 +120,7 @@ final class CodableFeedStoreTests: XCTestCase {
             XCTAssertNil(insertionError, "Expected feed to be inserted successfully")
             sut.retrieve { result in
                 switch result {
-                case let .found(resultFeed, resultTimestamp):
+                case let .success(.found(resultFeed, resultTimestamp)):
                     XCTAssertEqual(resultFeed, feed)
                     XCTAssertEqual(resultTimestamp, timestamp)
                 default:
@@ -145,7 +145,7 @@ final class CodableFeedStoreTests: XCTestCase {
             sut.retrieve { firstResult in
                 sut.retrieve { secondResult in
                     switch (firstResult, secondResult) {
-                    case let (.found(firstFeed, firstTimestamp), .found(secondFeed, secondTimestamp)):
+                    case let (.success(.found(firstFeed, firstTimestamp)), .success(.found(secondFeed, secondTimestamp))):
                         XCTAssertEqual(firstFeed, feed)
                         XCTAssertEqual(firstTimestamp, timestamp)
                         
