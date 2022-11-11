@@ -130,20 +130,20 @@ final class FeedViewControllerTests: XCTestCase {
     
     func test_feedImageView_rendersImageLoadedFromURL() {
 //        let (sut, loader) = makeSUT()
-//        
+//
 //        sut.loadViewIfNeeded()
 //        loader.completeFeedLoading(with: [makeImage(), makeImage()])
-//        
+//
 //        let view0 = sut.simulateFeedImageViewVisible(at: 0)
 //        let view1 = sut.simulateFeedImageViewVisible(at: 1)
 //        XCTAssertEqual(view0?.renderedImage, .none, "Expected no image for first view while loading first image")
 //        XCTAssertEqual(view1?.renderedImage, .none, "Expected no image for second view while loading second image")
-//        
+//
 //        let imageData0 = UIImage.make(withColor: .red).pngData()!
 //        loader.completeImageLoading(with: imageData0, at: 0)
 //        XCTAssertEqual(view0?.renderedImage, imageData0, "Expected image for first view once first image loading completes successfully")
 //        XCTAssertEqual(view1?.renderedImage, .none, "Expected no image state change for second view once first image loading completes successfully")
-//        
+//
 //        let imageData1 = UIImage.make(withColor: .blue).pngData()!
 //        loader.completeImageLoading(with: imageData1, at: 1)
 //        XCTAssertEqual(view0?.renderedImage, imageData0, "Expected no image state change for first view once second image loading completes successfully")
@@ -169,6 +169,21 @@ final class FeedViewControllerTests: XCTestCase {
         XCTAssertEqual(view0?.isShowingRetryButton, true, "Expected no loading indicator state change for first view once second image loading completes with error")
         XCTAssertEqual(view1?.isShowingRetryButton, true, "Expected no loading indicator for second view once second image loading completes with error")
 
+        
+    }
+    
+    func test_feedImageViewRetryButton_isVisibleOnInvalidImageData() {
+        let (sut, loader) = makeSUT()
+        
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading(with: [makeImage(), makeImage()], at: 0)
+        let view0 = sut.simulateFeedImageViewVisible(at: 0)
+
+        XCTAssertEqual(view0?.isShowingRetryButton, false, "Expected to not show retry button on loading image data")
+        
+        loader.completeImageLoading(with: Data("an invalid data".utf8), at: 0)
+        
+        XCTAssertEqual(view0?.isShowingRetryButton, true, "Expected to show retry button on complete loading with an invalid data")
         
     }
     
