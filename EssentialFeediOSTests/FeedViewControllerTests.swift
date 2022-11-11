@@ -129,6 +129,28 @@ final class FeedViewControllerTests: XCTestCase {
     }
     
     func test_feedImageView_rendersImageLoadedFromURL() {
+//        let (sut, loader) = makeSUT()
+//        
+//        sut.loadViewIfNeeded()
+//        loader.completeFeedLoading(with: [makeImage(), makeImage()])
+//        
+//        let view0 = sut.simulateFeedImageViewVisible(at: 0)
+//        let view1 = sut.simulateFeedImageViewVisible(at: 1)
+//        XCTAssertEqual(view0?.renderedImage, .none, "Expected no image for first view while loading first image")
+//        XCTAssertEqual(view1?.renderedImage, .none, "Expected no image for second view while loading second image")
+//        
+//        let imageData0 = UIImage.make(withColor: .red).pngData()!
+//        loader.completeImageLoading(with: imageData0, at: 0)
+//        XCTAssertEqual(view0?.renderedImage, imageData0, "Expected image for first view once first image loading completes successfully")
+//        XCTAssertEqual(view1?.renderedImage, .none, "Expected no image state change for second view once first image loading completes successfully")
+//        
+//        let imageData1 = UIImage.make(withColor: .blue).pngData()!
+//        loader.completeImageLoading(with: imageData1, at: 1)
+//        XCTAssertEqual(view0?.renderedImage, imageData0, "Expected no image state change for first view once second image loading completes successfully")
+//        XCTAssertEqual(view1?.renderedImage, imageData1, "Expected image for second view once second image loading completes successfully")
+    }
+    
+    func test_feedImageViewRetryButton_isVisbilenImageUTLLoadErro() {
         let (sut, loader) = makeSUT()
         
         sut.loadViewIfNeeded()
@@ -136,18 +158,18 @@ final class FeedViewControllerTests: XCTestCase {
         
         let view0 = sut.simulateFeedImageViewVisible(at: 0)
         let view1 = sut.simulateFeedImageViewVisible(at: 1)
-        XCTAssertEqual(view0?.renderedImage, .none, "Expected no image for first view while loading first image")
-        XCTAssertEqual(view1?.renderedImage, .none, "Expected no image for second view while loading second image")
+        XCTAssertEqual(view0?.isShowingRetryButton, false, "Expected loading indicator for first view while loading first image")
+        XCTAssertEqual(view1?.isShowingRetryButton, false, "Expected loading indicator for second view while loading second image")
+
+        loader.completeImageLoadingWithError(at: 0)
+        XCTAssertEqual(view0?.isShowingRetryButton, true, "Expected no loading indicator for first view once first image loading completes successfully")
+        XCTAssertEqual(view1?.isShowingRetryButton, false, "Expected no loading indicator state change for second view once first image loading completes successfully")
+
+        loader.completeImageLoadingWithError(at: 1)
+        XCTAssertEqual(view0?.isShowingRetryButton, true, "Expected no loading indicator state change for first view once second image loading completes with error")
+        XCTAssertEqual(view1?.isShowingRetryButton, true, "Expected no loading indicator for second view once second image loading completes with error")
+
         
-//        let imageData0 = UIImage.make(withColor: .red).pngData()!
-//        loader.completeImageLoading(with: imageData0, at: 0)
-//        XCTAssertEqual(view0?.renderedImage, imageData0, "Expected image for first view once first image loading completes successfully")
-//        XCTAssertEqual(view1?.renderedImage, .none, "Expected no image state change for second view once first image loading completes successfully")
-//        
-//        let imageData1 = UIImage.imageWith(name: "test")!.pngData()!
-//        loader.completeImageLoading(with: imageData1, at: 1)
-//        XCTAssertEqual(view0?.renderedImage, imageData0, "Expected no image state change for first view once second image loading completes successfully")
-//        XCTAssertEqual(view1?.renderedImage, imageData1, "Expected image for second view once second image loading completes successfully")
     }
     
     
@@ -238,7 +260,8 @@ final class FeedViewControllerTests: XCTestCase {
         }
         
         func completeImageLoadingWithError(at index: Int = 0) {
-            imageRequests[index].completion(.failure(NSError(domain: "", code: 1)))
+            let error = NSError(domain: "", code: 1)
+            imageRequests[index].completion(.failure(error))
         }
     }
 }
@@ -253,11 +276,11 @@ private extension FeedViewController {
         feedImageView(at: index) as? FeedImageCell
     }
     
-    func simulateFeedImageViewNotVisible(at index: Int) {
-        let view = simulateFeedImageViewVisible(at: index)
+    func simulateFeedImageViewNotVisible(at row: Int) {
+        let view = simulateFeedImageViewVisible(at: row)
         
         let delegate = tableView.delegate
-        let index = IndexPath(row: index, section: feedImagesSection)
+        let index = IndexPath(row: row, section: feedImagesSection)
         delegate?.tableView?(tableView, didEndDisplaying: view!, forRowAt: index)
     }
     
@@ -298,7 +321,11 @@ private extension FeedImageCell {
     }
 
     var renderedImage: Data? {
-        return imageView?.image?.pngData()
+        return feedImageView.image?.pngData()
+    }
+
+    var isShowingRetryButton: Bool {
+        return !feedImageRetryButton.isHidden
     }
 }
 
@@ -311,7 +338,6 @@ private extension UIRefreshControl {
         }
     }
 }
-
 private extension UIImage {
     static func make(withColor color: UIColor) -> UIImage {
         let rect = CGRect(x: 0, y: 0, width: 1, height: 1)
@@ -322,22 +348,5 @@ private extension UIImage {
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return img!
-    }
-    
-    static func imageWith(name: String?) -> UIImage? {
-         let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-         let nameLabel = UILabel(frame: frame)
-         nameLabel.textAlignment = .center
-         nameLabel.backgroundColor = .lightGray
-         nameLabel.textColor = .white
-         nameLabel.font = UIFont.boldSystemFont(ofSize: 40)
-         nameLabel.text = name
-         UIGraphicsBeginImageContext(frame.size)
-          if let currentContext = UIGraphicsGetCurrentContext() {
-             nameLabel.layer.render(in: currentContext)
-             let nameImage = UIGraphicsGetImageFromCurrentImageContext()
-             return nameImage
-          }
-          return nil
     }
 }

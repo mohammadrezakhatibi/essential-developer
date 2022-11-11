@@ -59,9 +59,11 @@ final public class FeedViewController: UITableViewController {
         cell.descriptionLabel.text = cellModel.description
         cell.feedImageContainer.startShimmering()
         cell.feedImageView.image = nil
+        cell.feedImageRetryButton.isHidden = true
         tasks[indexPath] = imageLoader?.loadImageData(from: cellModel.url) { [weak cell] result in
             let data = try? result.get()
-            cell?.imageView?.image = data.map(UIImage.init) ?? nil
+            cell?.feedImageView.image = data.map(UIImage.init) ?? nil
+            cell?.feedImageRetryButton.isHidden = (data != nil)
             cell?.feedImageContainer.stopShimmering()
         }
         return cell
@@ -70,5 +72,16 @@ final public class FeedViewController: UITableViewController {
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         tasks[indexPath]?.cancel()
         tasks[indexPath] = nil
+    }
+    
+    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let cellModel = tableModel[indexPath.row]
+        guard let cell = cell as? FeedImageCell else { return}
+        tasks[indexPath] = imageLoader?.loadImageData(from: cellModel.url) { [weak cell] result in
+            let data = try? (result.get())
+            cell?.feedImageView.image = data.map(UIImage.init) ?? nil
+            cell?.feedImageRetryButton.isHidden = (data != nil)
+            cell?.feedImageContainer.stopShimmering()
+        }
     }
 }
