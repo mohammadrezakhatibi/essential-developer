@@ -7,44 +7,35 @@
 
 import UIKit
 
-final class FeedImageCellController {
-    private let viewModel: FeedImageViewModel<UIImage>
+final class FeedImageCellController: FeedImageView {
     
-    init(viewModel: FeedImageViewModel<UIImage>) {
-        self.viewModel = viewModel
+    private let presenter: FeedImagePresenter<FeedImageCellController, UIImage>
+    private let cell = FeedImageCell()
+    
+    init(presenter: FeedImagePresenter<FeedImageCellController, UIImage>) {
+        self.presenter = presenter
     }
     
     func view() -> UITableViewCell {
-        let cell = binded(FeedImageCell())
-        viewModel.loadImageData()
+        presenter.loadImageData()
         return cell
     }
     
     func preload() {
-        viewModel.loadImageData()
+        presenter.loadImageData()
     }
     
     func cancelLoad() {
-        viewModel.cancelLoad()
+        presenter.cancelLoad()
     }
     
-    func binded(_ cell: FeedImageCell) -> FeedImageCell {
+    func display(with viewModel: FeedImageViewModel<UIImage>) {
+        cell.feedImageContainer.isShimmering = viewModel.isLoading
+        cell.feedImageRetryButton.isHidden = !viewModel.isRetry
         cell.locationContainer.isHidden = !viewModel.hasLocation
         cell.locationLabel.text = viewModel.location
         cell.descriptionLabel.text = viewModel.description
-        cell.onRetry = viewModel.loadImageData
-        
-        viewModel.onImageLoad = { [weak cell] image in
-            cell?.feedImageView.image = image
-        }
-        viewModel.onImageLoadingStateChange = { [weak cell] isLoading in
-            cell?.feedImageContainer.isShimmering = isLoading
-        }
-        
-        viewModel.onShouldRetryImageLoadStateChange = { [weak cell] shouldRetry in
-            cell?.feedImageRetryButton.isHidden = !shouldRetry
-        }
-        
-        return cell
+        cell.feedImageView.image = viewModel.image
+        cell.onRetry = presenter.loadImageData
     }
 }
