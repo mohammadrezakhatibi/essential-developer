@@ -7,26 +7,31 @@
 
 import UIKit
 
-final class FeedImageCellController: FeedImageView {
+protocol FeedImageCellControllerDelegate {
+    func loadImageData()
+    func cancelImageLoadData()
+}
+
+final class FeedImageCellController: FeedImageView{
     
-    private let presenter: FeedImagePresenter<FeedImageCellController, UIImage>
     private let cell = FeedImageCell()
+    private let delegate: FeedImageCellControllerDelegate?
     
-    init(presenter: FeedImagePresenter<FeedImageCellController, UIImage>) {
-        self.presenter = presenter
+    init(delegate: FeedImageCellControllerDelegate) {
+        self.delegate = delegate
     }
     
     func view() -> UITableViewCell {
-        presenter.loadImageData()
+        delegate?.loadImageData()
         return cell
     }
     
     func preload() {
-        presenter.loadImageData()
+        delegate?.loadImageData()
     }
     
     func cancelLoad() {
-        presenter.cancelLoad()
+        delegate?.cancelImageLoadData()
     }
     
     func display(with viewModel: FeedImageViewModel<UIImage>) {
@@ -36,6 +41,6 @@ final class FeedImageCellController: FeedImageView {
         cell.locationLabel.text = viewModel.location
         cell.descriptionLabel.text = viewModel.description
         cell.feedImageView.image = viewModel.image
-        cell.onRetry = presenter.loadImageData
+        cell.onRetry = delegate?.loadImageData
     }
 }
