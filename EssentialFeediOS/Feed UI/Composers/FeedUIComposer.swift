@@ -43,9 +43,8 @@ extension WeakRefVirtualProxy: FeedLoadingView where T: FeedLoadingView {
 }
 
 extension WeakRefVirtualProxy: FeedErrorView where T: FeedErrorView {
-    
-    func display(_ message: String?) {
-        object?.display(message)
+    func display(_ viewModel: EssentialFeed.FeedErrorViewModel) {
+        object?.display(viewModel)
     }
 }
 

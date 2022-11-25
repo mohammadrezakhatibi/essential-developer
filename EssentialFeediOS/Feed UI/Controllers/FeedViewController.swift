@@ -6,8 +6,10 @@
 //
 
 import UIKit
+import EssentialFeed
 
 public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedErrorView {
+    
     private var refreshController: FeedRefreshViewController?
     private(set) public var errorView = ErrorView()
     
@@ -20,8 +22,8 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         self.refreshController = refreshController
     }
     
-    func display(_ message: String?) {
-        if let message {
+    public func display(_ viewModel: EssentialFeed.FeedErrorViewModel) {
+        if let message = viewModel.message {
             self.errorView.show(message: message)
         } else {
             self.errorView.hideMessage()
