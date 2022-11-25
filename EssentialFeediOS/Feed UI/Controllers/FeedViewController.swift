@@ -7,8 +7,10 @@
 
 import UIKit
 
-public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
+public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedErrorView {
     private var refreshController: FeedRefreshViewController?
+    private(set) public var errorView = ErrorView()
+    
     var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
     }
@@ -18,14 +20,25 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         self.refreshController = refreshController
     }
     
+    func display(_ message: String?) {
+        if let message {
+            self.errorView.show(message: message)
+        } else {
+            self.errorView.hideMessage()
+        }
+    }
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
         
         refreshControl = refreshController?.view
         
         tableView.prefetchDataSource = self
+        tableView.tableHeaderView = errorView
         refreshController?.refresh()
     }
+    
+    
     
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableModel.count
