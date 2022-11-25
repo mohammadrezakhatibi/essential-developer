@@ -49,6 +49,13 @@
 		D7E48945290934E300A9A24E /* LocalFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E48944290934E300A9A24E /* LocalFeedLoader.swift */; };
 		D7E489472909354900A9A24E /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E489462909354900A9A24E /* FeedStore.swift */; };
 		D7E4894B29095ABE00A9A24E /* LocalFeedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E4894A29095ABE00A9A24E /* LocalFeedImage.swift */; };
+		D7F75B372930BB8E009FC75A /* FeedViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F75B362930BB8E009FC75A /* FeedViewController+Helpers.swift */; };
+		D7F75B392930BC1A009FC75A /* FeedImageCell+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F75B382930BC1A009FC75A /* FeedImageCell+Helpers.swift */; };
+		D7F75B3B2930BC4E009FC75A /* UIRefreshControl+Simulate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F75B3A2930BC4E009FC75A /* UIRefreshControl+Simulate.swift */; };
+		D7F75B3D2930BC70009FC75A /* UIButton+SimulateTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F75B3C2930BC70009FC75A /* UIButton+SimulateTap.swift */; };
+		D7F75B3F2930BC9C009FC75A /* UIControl+Simulate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F75B3E2930BC9C009FC75A /* UIControl+Simulate.swift */; };
+		D7F75B412930BCBE009FC75A /* UIImage+Make.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F75B402930BCBE009FC75A /* UIImage+Make.swift */; };
+		D7F75B432930BD2A009FC75A /* FeedUIIntegrationTests+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F75B422930BD2A009FC75A /* FeedUIIntegrationTests+Helpers.swift */; };
 		E4126DAF291065030055DE64 /* CodableFeedStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4126DAE291065030055DE64 /* CodableFeedStoreTests.swift */; };
 		E41D655A292EBE5E00B92429 /* MainQueueDispatchDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E41D6559292EBE5E00B92429 /* MainQueueDispatchDecorator.swift */; };
 		E46D928F2926D20700C0BC90 /* FeedImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46D928E2926D20700C0BC90 /* FeedImageViewModel.swift */; };
@@ -163,6 +170,13 @@
 		D7E48944290934E300A9A24E /* LocalFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedLoader.swift; sourceTree = "<group>"; };
 		D7E489462909354900A9A24E /* FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStore.swift; sourceTree = "<group>"; };
 		D7E4894A29095ABE00A9A24E /* LocalFeedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalFeedImage.swift; sourceTree = "<group>"; };
+		D7F75B362930BB8E009FC75A /* FeedViewController+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedViewController+Helpers.swift"; sourceTree = "<group>"; };
+		D7F75B382930BC1A009FC75A /* FeedImageCell+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedImageCell+Helpers.swift"; sourceTree = "<group>"; };
+		D7F75B3A2930BC4E009FC75A /* UIRefreshControl+Simulate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+Simulate.swift"; sourceTree = "<group>"; };
+		D7F75B3C2930BC70009FC75A /* UIButton+SimulateTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+SimulateTap.swift"; sourceTree = "<group>"; };
+		D7F75B3E2930BC9C009FC75A /* UIControl+Simulate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+Simulate.swift"; sourceTree = "<group>"; };
+		D7F75B402930BCBE009FC75A /* UIImage+Make.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Make.swift"; sourceTree = "<group>"; };
+		D7F75B422930BD2A009FC75A /* FeedUIIntegrationTests+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedUIIntegrationTests+Helpers.swift"; sourceTree = "<group>"; };
 		E4126DAE291065030055DE64 /* CodableFeedStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableFeedStoreTests.swift; sourceTree = "<group>"; };
 		E41D6559292EBE5E00B92429 /* MainQueueDispatchDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainQueueDispatchDecorator.swift; sourceTree = "<group>"; };
 		E46D928E2926D20700C0BC90 /* FeedImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageViewModel.swift; sourceTree = "<group>"; };
@@ -282,6 +296,13 @@
 			isa = PBXGroup;
 			children = (
 				D74F55B4292E5CB200BA385A /* FeedViewController+Localized.swift */,
+				D7F75B362930BB8E009FC75A /* FeedViewController+Helpers.swift */,
+				D7F75B382930BC1A009FC75A /* FeedImageCell+Helpers.swift */,
+				D7F75B3A2930BC4E009FC75A /* UIRefreshControl+Simulate.swift */,
+				D7F75B3C2930BC70009FC75A /* UIButton+SimulateTap.swift */,
+				D7F75B3E2930BC9C009FC75A /* UIControl+Simulate.swift */,
+				D7F75B402930BCBE009FC75A /* UIImage+Make.swift */,
+				D7F75B422930BD2A009FC75A /* FeedUIIntegrationTests+Helpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -837,9 +858,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7F75B392930BC1A009FC75A /* FeedImageCell+Helpers.swift in Sources */,
+				D7F75B3F2930BC9C009FC75A /* UIControl+Simulate.swift in Sources */,
+				D7F75B372930BB8E009FC75A /* FeedViewController+Helpers.swift in Sources */,
+				D7F75B412930BCBE009FC75A /* UIImage+Make.swift in Sources */,
+				D7F75B432930BD2A009FC75A /* FeedUIIntegrationTests+Helpers.swift in Sources */,
 				E4E2F3C3291AF0FA00A9680D /* FeedUIIntegrationTests.swift in Sources */,
 				D74F55B5292E5CB200BA385A /* FeedViewController+Localized.swift in Sources */,
+				D7F75B3D2930BC70009FC75A /* UIButton+SimulateTap.swift in Sources */,
 				E4E2F3CA291AF5CF00A9680D /* XCTestCase+MemoryLeakTracking.swift in Sources */,
+				D7F75B3B2930BC4E009FC75A /* UIRefreshControl+Simulate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
