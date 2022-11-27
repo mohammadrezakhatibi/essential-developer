@@ -27,9 +27,11 @@ protocol FeedImageView {
 final class FeedImagePresenter {
     
     private let view: FeedImageView
+    private let imageTransformer: (Data) -> Any?
     
-    init(view: FeedImageView) {
+    init(view: FeedImageView, imageTransformer: @escaping (Data) -> Any?) {
         self.view = view
+        self.imageTransformer = imageTransformer
     }
     
     func didStartLoadingImageData(for model: FeedImage) {
@@ -39,6 +41,15 @@ final class FeedImagePresenter {
             image: nil,
             isLoading: true,
             shouldRetry: false))
+    }
+    
+    func didFinishLoadingImageData(with data: Data, for model: FeedImage)  {
+        view.display(FeedImageViewModel(
+            description: model.description,
+            location: model.location,
+            image: nil,
+            isLoading: false,
+            shouldRetry: true))
     }
 }
 
@@ -66,11 +77,27 @@ final class FeedImagePresenterTests: XCTestCase {
         XCTAssertNil(message?.image)
     }
     
+    func test_didStartLoadingImageData_displayRetryButtonOnFailedImageTransformation() {
+        let (sut, view) = makeSUT(imageTransformer: { _ in nil })
+        let model = uniqueImage()
+        let data = Data("a data".utf8)
+        
+        sut.didFinishLoadingImageData(with: data, for: model)
+        
+        let message = view.messages.first
+        XCTAssertEqual(view.messages.count, 1)
+        XCTAssertEqual(model.description, message?.description)
+        XCTAssertEqual(model.location, message?.location)
+        XCTAssertEqual(message?.isLoading, false)
+        XCTAssertEqual(message?.shouldRetry, true)
+        XCTAssertNil(message?.image)
+    }
+    
     //MARK: - Helpers
     
-    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: FeedImagePresenter, view: ViewSpy) {
+    private func makeSUT(imageTransformer: @escaping (Data) -> Any? = { _ in nil }, file: StaticString = #filePath, line: UInt = #line) -> (sut: FeedImagePresenter, view: ViewSpy) {
         let view = ViewSpy()
-        let sut = FeedImagePresenter(view: view)
+        let sut = FeedImagePresenter(view: view, imageTransformer: imageTransformer)
         trackForeMemoryLeak(view, file: file, line: line)
         trackForeMemoryLeak(sut, file: file, line: line)
         return (sut, view)
