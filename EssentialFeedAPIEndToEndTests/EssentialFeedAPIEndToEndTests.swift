@@ -46,6 +46,9 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
     }
     
     // MARK: - Helpers
+    private var feedTestServerURL: URL {
+        return URL(string: "https://lokomond.com/essential-feed/")!
+    }
     
     private func expectedImage(at index: Int) -> FeedImage {
         return FeedImage(id: id(at: index),
@@ -56,7 +59,7 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
     
     private func getFeedResult(file: StaticString = #filePath,
                                line: UInt = #line) -> FeedLoader.Result? {
-        let url = URL(string: "https://lokomond.com/essential-feed/feed.json")!
+        let url = feedTestServerURL.appendingPathComponent("feed.json")
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         let loader = RemoteFeedLoader(url: url, client: client)
         
@@ -76,7 +79,7 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
     }
     
     private func getFeedImageDataResult(file: StaticString = #file, line: UInt = #line) -> FeedImageDataLoader.Result? {
-        let testServerURL = URL(string: "https://lokomond.com/essential-feed/swift.png")!
+        let testServerURL = feedTestServerURL.appendingPathComponent("swift.png")
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         let loader = RemoteFeedImageDataLoader(client: client)
         trackForeMemoryLeak(client, file: file, line: line)
