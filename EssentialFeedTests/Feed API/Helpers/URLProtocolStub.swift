@@ -69,4 +69,8 @@ class URLProtocolStub: URLProtocol {
     }
     
     override func stopLoading() {}
+    
+    static func removeStub() {
+        stub = nil
+    }
 }
