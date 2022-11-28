@@ -32,6 +32,19 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
         }
     }
     
+    func test_endToEndTestServerGETFeedImageDataResult_matchesFixedTestAccountData() {
+        switch getFeedImageDataResult() {
+        case let .success(data)?:
+            XCTAssertFalse(data.isEmpty, "Expected non-empty image data")
+
+        case let .failure(error)?:
+            XCTFail("Expected successful image data result, got \(error) instead")
+
+        default:
+            XCTFail("Expected successful image data result, got no result instead")
+        }
+    }
+    
     // MARK: - Helpers
     
     private func expectedImage(at index: Int) -> FeedImage {
@@ -59,6 +72,25 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
         }
         
         wait(for: [exp], timeout: 5.0)
+        return receivedResult
+    }
+    
+    private func getFeedImageDataResult(file: StaticString = #file, line: UInt = #line) -> FeedImageDataLoader.Result? {
+        let testServerURL = URL(string: "https://lokomond.com/essential-feed/swift.png")!
+        let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
+        let loader = RemoteFeedImageDataLoader(client: client)
+        trackForeMemoryLeak(client, file: file, line: line)
+        trackForeMemoryLeak(loader, file: file, line: line)
+
+        let exp = expectation(description: "Wait for load completion")
+
+        var receivedResult: FeedImageDataLoader.Result?
+        _ = loader.loadImageData(from: testServerURL) { result in
+            receivedResult = result
+            exp.fulfill()
+        }
+        wait(for: [exp], timeout: 5.0)
+
         return receivedResult
     }
     
