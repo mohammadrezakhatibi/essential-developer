@@ -170,6 +170,7 @@
 		D719AFFA2936164700CBD583 /* FeedImageDataStoreSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataStoreSpy.swift; sourceTree = "<group>"; };
 		D719AFFC293616CF00CBD583 /* CacheFeedImageDataUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheFeedImageDataUseCaseTests.swift; sourceTree = "<group>"; };
 		D719AFFE293637D100CBD583 /* CoreDataFeedImageDataStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedImageDataStoreTests.swift; sourceTree = "<group>"; };
+		D719B0002936419700CBD583 /* FeedStore 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FeedStore 2.xcdatamodel"; sourceTree = "<group>"; };
 		D734DA0728F80C860092A4B7 /* RemoteFeedLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedLoaderTests.swift; sourceTree = "<group>"; };
 		D734DA0A28F8153B0092A4B7 /* RemoteFeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFeedLoader.swift; sourceTree = "<group>"; };
 		D74F55B4292E5CB200BA385A /* FeedViewController+Localized.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedViewController+Localized.swift"; sourceTree = "<group>"; };
@@ -301,11 +302,11 @@
 		D70944A22913D71300826BCD /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				D70944A82913D71300826BCD /* CoreDataFeedStore.swift */,
 				D70944A32913D71300826BCD /* CoreDataHelpers.swift */,
+				D70944A72913D71300826BCD /* ManagedCache.swift */,
 				D70944A42913D71300826BCD /* ManagedFeedImage.swift */,
 				D70944A52913D71300826BCD /* FeedStore.xcdatamodeld */,
-				D70944A72913D71300826BCD /* ManagedCache.swift */,
-				D70944A82913D71300826BCD /* CoreDataFeedStore.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -1485,9 +1486,10 @@
 		D70944A52913D71300826BCD /* FeedStore.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				D719B0002936419700CBD583 /* FeedStore 2.xcdatamodel */,
 				D70944A62913D71300826BCD /* FeedStore.xcdatamodel */,
 			);
-			currentVersion = D70944A62913D71300826BCD /* FeedStore.xcdatamodel */;
+			currentVersion = D719B0002936419700CBD583 /* FeedStore 2.xcdatamodel */;
 			path = FeedStore.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
