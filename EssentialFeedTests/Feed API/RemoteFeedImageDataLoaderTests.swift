@@ -118,8 +118,8 @@ final class LoadFeedImageDataFromRemoteUseCaseTests: XCTestCase {
     private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: RemoteFeedImageDataLoader, client: HTTPClientSpy) {
         let client = HTTPClientSpy()
         let sut = RemoteFeedImageDataLoader(client: client)
-        trackForeMemoryLeak(client, file: file, line: line)
-        trackForeMemoryLeak(sut, file: file, line: line)
+        trackForMemoryLeaks(client, file: file, line: line)
+        trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, client)
     }
     

@@ -63,8 +63,8 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         let loader = RemoteFeedLoader(url: url, client: client)
         
-        trackForeMemoryLeak(loader, file: file, line: line)
-        trackForeMemoryLeak(client, file: file, line: line)
+        trackForMemoryLeaks(loader, file: file, line: line)
+        trackForMemoryLeaks(client, file: file, line: line)
         
         let exp = expectation(description: "Wait for load completion")
         
@@ -82,8 +82,8 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
         let testServerURL = feedTestServerURL.appendingPathComponent("swift.png")
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
         let loader = RemoteFeedImageDataLoader(client: client)
-        trackForeMemoryLeak(client, file: file, line: line)
-        trackForeMemoryLeak(loader, file: file, line: line)
+        trackForMemoryLeaks(client, file: file, line: line)
+        trackForMemoryLeaks(loader, file: file, line: line)
 
         let exp = expectation(description: "Wait for load completion")
 
