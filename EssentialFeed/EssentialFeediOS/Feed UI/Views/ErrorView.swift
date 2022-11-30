@@ -17,10 +17,15 @@ public final class ErrorView: UIView {
     
     convenience init() {
         self.init(frame: .zero)
+        self.backgroundColor = .red
         
         button.setTitle(nil, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.addTarget(self, action: #selector(buttonTap), for: .touchUpInside)
         alpha = 0
+        
+        addSubview(button)
+        button.stickToEdge(of: self)
     }
 
     func show(message: String) {
@@ -44,5 +49,15 @@ public final class ErrorView: UIView {
                     self.button.setTitle(nil, for: .normal)
                 }
             })
+    }
+}
+
+private extension UIView {
+    func stickToEdge(of parent: UIView, constant: CGFloat = 0) {
+        translatesAutoresizingMaskIntoConstraints = false
+        widthAnchor.constraint(equalTo: parent.widthAnchor, constant: constant).isActive = true
+        heightAnchor.constraint(equalTo: parent.heightAnchor, constant: constant).isActive = true
+        centerXAnchor.constraint(equalTo: parent.centerXAnchor).isActive = true
+        centerYAnchor.constraint(equalTo: parent.centerYAnchor).isActive = true
     }
 }

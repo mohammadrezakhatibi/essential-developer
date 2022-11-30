@@ -9,19 +9,57 @@ import UIKit
 
 public final class FeedImageCell: UITableViewCell {
     public let locationContainer = UIView()
-    public let locationLabel = UILabel()
-    public let descriptionLabel = UILabel()
+    
+    public lazy var locationLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor(red: 180/256, green: 180/256, blue: 180/256, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.numberOfLines = 2
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    public lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 15)
+        label.textColor = UIColor(red: 88/256, green: 88/256, blue: 88/256, alpha: 1)
+        return label
+    }()
+    
     public let feedImageContainer = UIView()
-    public let feedImageView = UIImageView()
+    
+    public lazy var feedImageView: UIImageView = {
+        let view = UIImageView()
+        view.backgroundColor = UIColor(red: 244/256, green: 244/256, blue: 244/256, alpha: 1)
+        view.layer.cornerRadius = 16
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFill
+        return view
+    }()
+    
     private(set) public lazy var feedImageRetryButton: UIButton = {
         let button = UIButton()
         button.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    private let containerStackView = UIStackView()
+    private var containerStackView: UIStackView?
+    
     private let descriptionLabelContainer = UIView()
-    private let headerStackView = UIStackView()
+    private let loadingIndicator = UIActivityIndicatorView(style: .large)
+    
+    public var isLoading: Bool = true {
+        didSet {
+            if isLoading {
+                loadingIndicator.startAnimating()
+            } else {
+                loadingIndicator.stopAnimating()
+            }
+        }
+    }
     
     var onRetry: (() -> Void)?
     
@@ -32,6 +70,7 @@ public final class FeedImageCell: UITableViewCell {
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addLayoutAndSubviews()
+        selectionStyle = .none
     }
     
     required init?(coder: NSCoder) {
@@ -39,46 +78,89 @@ public final class FeedImageCell: UITableViewCell {
     }
     
     private func addLayoutAndSubviews() {
-        locationLabel.textColor = .black
-        descriptionLabel.textColor = .black
-        descriptionLabel.numberOfLines = 0
         
-        headerStackView.spacing = 16
-        headerStackView.axis = .horizontal
-        headerStackView.alignment = .center
-        headerStackView.distribution = .equalSpacing
-        headerStackView.translatesAutoresizingMaskIntoConstraints = false
+        containerStackView = UIStackView()
+        containerStackView?.alignment = .top
+        containerStackView?.axis = .vertical
+        containerStackView?.distribution = .fill
+        containerStackView?.addArrangedSubview(locationContainer)
+        containerStackView?.addArrangedSubview(feedImageContainer)
+        containerStackView?.addArrangedSubview(descriptionLabelContainer)
         
-        headerStackView.addArrangedSubview(locationLabel)
+        locationContainer.addSubview(locationLabel)
+        locationLabel
+            .topAnchor
+            .constraint(equalTo: locationContainer.topAnchor, constant: 16)
+            .isActive = true
         
-        containerStackView.addArrangedSubview(headerStackView)
-        containerStackView.addArrangedSubview(feedImageContainer)
-        containerStackView.addArrangedSubview(descriptionLabelContainer)
+        locationLabel
+            .widthAnchor
+            .constraint(equalTo: locationContainer.widthAnchor, constant: -40)
+            .isActive = true
+        locationLabel
+            .centerXAnchor
+            .constraint(equalTo: locationContainer.centerXAnchor)
+            .isActive = true
         
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        locationLabel
+            .bottomAnchor
+            .constraint(equalTo: locationContainer.bottomAnchor)
+            .isActive = true
+        
         descriptionLabelContainer.addSubview(descriptionLabel)
-        descriptionLabel.centerXAnchor.constraint(equalTo: descriptionLabelContainer.centerXAnchor).isActive = true
-        descriptionLabel.topAnchor.constraint(equalTo: descriptionLabelContainer.topAnchor, constant: 16).isActive = true
-        descriptionLabel.leadingAnchor.constraint(equalTo: descriptionLabelContainer.leadingAnchor, constant: 16).isActive = true
-        descriptionLabel.trailingAnchor.constraint(equalTo: descriptionLabelContainer.trailingAnchor, constant: -16).isActive = true
+        descriptionLabel
+            .centerXAnchor
+            .constraint(equalTo: descriptionLabelContainer.centerXAnchor)
+            .isActive = true
+        descriptionLabel
+            .topAnchor
+            .constraint(equalTo: descriptionLabelContainer.topAnchor)
+            .isActive = true
+        descriptionLabel
+            .bottomAnchor
+            .constraint(equalTo: descriptionLabelContainer.bottomAnchor, constant: 0)
+            .isActive = true
+        descriptionLabel
+            .leadingAnchor
+            .constraint(equalTo: descriptionLabelContainer.leadingAnchor, constant: 16)
+            .isActive = true
+        descriptionLabel
+            .trailingAnchor
+            .constraint(equalTo: descriptionLabelContainer.trailingAnchor, constant: -16)
+            .isActive = true
         
-        containerStackView.alignment = .top
-        containerStackView.axis = .vertical
-        containerStackView.distribution = .fill
-        
-        addSubview(containerStackView)
-        containerStackView.stickToEdge(of: self)
-        
-        headerStackView.widthAnchor.constraint(equalTo: containerStackView.widthAnchor).isActive = true
-        headerStackView.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        
-        feedImageContainer.backgroundColor = .lightGray
-        feedImageContainer.widthAnchor.constraint(equalTo: containerStackView.widthAnchor).isActive = true
-        feedImageContainer.heightAnchor.constraint(equalTo: containerStackView.widthAnchor).isActive = true
+        feedImageContainer
+            .widthAnchor
+            .constraint(equalTo: containerStackView!.widthAnchor)
+            .isActive = true
+        feedImageContainer
+            .heightAnchor
+            .constraint(equalTo: containerStackView!.widthAnchor)
+            .isActive = true
         
         feedImageContainer.addSubview(feedImageView)
-        feedImageView.stickToEdge(of: feedImageContainer, constant: -16)
+        feedImageView.stickToEdge(of: feedImageContainer, constant: -32)
         
+        loadingIndicator.startAnimating()
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        feedImageContainer.addSubview(loadingIndicator)
+        loadingIndicator
+            .centerXAnchor
+            .constraint(equalTo: feedImageContainer.centerXAnchor)
+            .isActive = true
+        
+        loadingIndicator
+            .centerYAnchor
+            .constraint(equalTo: feedImageContainer.centerYAnchor)
+            .isActive = true
+        
+        addSubview(containerStackView!)
+        containerStackView?.stickToEdge(of: self)
+    }
+    
+    public override func prepareForReuse() {
+        containerStackView = nil
     }
 }
 

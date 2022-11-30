@@ -35,8 +35,11 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         
         refreshControl = refreshController?.view
         
+        tableView.register(FeedImageCell.self, forCellReuseIdentifier: "FeedImageCell")
         tableView.prefetchDataSource = self
+        errorView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         tableView.tableHeaderView = errorView
+        tableView.separatorStyle = .none
         refreshController?.refresh()
     }
 
@@ -45,7 +48,7 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     }
     
     public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return cellController(forRowAt: indexPath).view()
+        return cellController(forRowAt: indexPath).view(in: tableView)
     }
     
     public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
