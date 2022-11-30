@@ -29,7 +29,7 @@ final class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
     
     func test_loadImageDataFromURL_failsOnStoreFailureRetrieval() {
         let (sut, store) = makeSUT()
-        let error = LocalFeedImageLoader.LoadError.failed
+        let error = LocalFeedImageDataLoader.LoadError.failed
         
         expect(sut, toCompleteWith: .failure(error), when: {
             store.completeRetrieval(with: error)
@@ -71,7 +71,7 @@ final class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
     func test_loadImageDataFromURL_doesNotDeliverResultAfterSUTInstanceHasBeenDeallocated() {
         
         let store = FeedImageDataStoreSpy()
-        var sut: LocalFeedImageLoader? = LocalFeedImageLoader(store: store)
+        var sut: LocalFeedImageDataLoader? = LocalFeedImageDataLoader(store: store)
         
         var received = [FeedImageDataLoader.Result]()
         _ = sut?.loadImageData(from: anyURL(), completion: { received.append($0) })
@@ -87,15 +87,15 @@ final class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
     
     // MARK: - Helpers
     
-    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedImageLoader, store: FeedImageDataStoreSpy) {
+    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
         let store = FeedImageDataStoreSpy()
-        let sut = LocalFeedImageLoader(store: store)
+        let sut = LocalFeedImageDataLoader(store: store)
         trackForeMemoryLeak(store, file: file, line: line)
         trackForeMemoryLeak(sut, file: file, line: line)
         return (sut, store)
     }
     
-    private func expect(_ sut: LocalFeedImageLoader, toCompleteWith expectedResult: FeedImageDataLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
+    private func expect(_ sut: LocalFeedImageDataLoader, toCompleteWith expectedResult: FeedImageDataLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
         
         let url = anyURL()
         
@@ -106,7 +106,7 @@ final class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
             case let (.success(expectedData), .success(receivedData)):
                 XCTAssertEqual(expectedData, receivedData, file: file, line: line)
                 
-            case (.failure(let expectedError as LocalFeedImageLoader.LoadError), .failure(let receivedError as LocalFeedImageLoader.LoadError)):
+            case (.failure(let expectedError as LocalFeedImageDataLoader.LoadError), .failure(let receivedError as LocalFeedImageDataLoader.LoadError)):
                 XCTAssertEqual(expectedError , receivedError , file: file, line: line)
                 
             default:
@@ -122,7 +122,7 @@ final class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
     }
     
     private func notFound() -> FeedImageDataLoader.Result {
-        return .failure(LocalFeedImageLoader.LoadError.notFound)
+        return .failure(LocalFeedImageDataLoader.LoadError.notFound)
     }
     
     private func never(file: StaticString = #file, line: UInt = #line) {
