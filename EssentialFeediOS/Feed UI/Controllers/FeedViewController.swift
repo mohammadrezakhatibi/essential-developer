@@ -39,9 +39,7 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         tableView.tableHeaderView = errorView
         refreshController?.refresh()
     }
-    
-    
-    
+
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tableModel.count
     }
