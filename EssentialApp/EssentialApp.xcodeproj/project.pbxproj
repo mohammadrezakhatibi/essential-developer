@@ -18,7 +18,7 @@
 		D77A909429377BF20027A16F /* EssentialFeed.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D77A909129377BF20027A16F /* EssentialFeed.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D77A909529377BF20027A16F /* EssentialFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77A909229377BF20027A16F /* EssentialFeediOS.framework */; };
 		D77A909629377BF20027A16F /* EssentialFeediOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D77A909229377BF20027A16F /* EssentialFeediOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D77A90992937A48E0027A16F /* RemoteWithLocalFallbackFeedLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77A90982937A48E0027A16F /* RemoteWithLocalFallbackFeedLoaderTests.swift */; };
+		D77A90992937A48E0027A16F /* FeedLoaderWithFallbackCompositeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77A90982937A48E0027A16F /* FeedLoaderWithFallbackCompositeTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,7 +59,7 @@
 		D77A907329376CBC0027A16F /* EssentialAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EssentialAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D77A909129377BF20027A16F /* EssentialFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EssentialFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D77A909229377BF20027A16F /* EssentialFeediOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = EssentialFeediOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D77A90982937A48E0027A16F /* RemoteWithLocalFallbackFeedLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteWithLocalFallbackFeedLoaderTests.swift; sourceTree = "<group>"; };
+		D77A90982937A48E0027A16F /* FeedLoaderWithFallbackCompositeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderWithFallbackCompositeTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,7 +119,7 @@
 		D77A907629376CBC0027A16F /* EssentialAppTests */ = {
 			isa = PBXGroup;
 			children = (
-				D77A90982937A48E0027A16F /* RemoteWithLocalFallbackFeedLoaderTests.swift */,
+				D77A90982937A48E0027A16F /* FeedLoaderWithFallbackCompositeTests.swift */,
 			);
 			path = EssentialAppTests;
 			sourceTree = "<group>";
@@ -247,7 +247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D77A90992937A48E0027A16F /* RemoteWithLocalFallbackFeedLoaderTests.swift in Sources */,
+				D77A90992937A48E0027A16F /* FeedLoaderWithFallbackCompositeTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
