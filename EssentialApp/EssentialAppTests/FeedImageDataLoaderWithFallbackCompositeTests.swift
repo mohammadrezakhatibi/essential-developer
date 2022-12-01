@@ -43,8 +43,8 @@ final class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
 final class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     
     func test_load_deliversPrimaryImageDataOnPrimaryImageDataLoad() {
-        let primaryData = anyData()
-        let fallbackData = anyData()
+        let primaryData = Data("a data".utf8)
+        let fallbackData = Data("another data".utf8)
         
         let primaryLoader = LoaderStub(.success(primaryData))
         let fallbackLoader = LoaderStub(.success(fallbackData))
@@ -67,7 +67,7 @@ final class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
     }
     
     func test_load_deliversFallbackImageDataOnPrimaryImageDataLoadFailure() {
-        let fallbackData = anyData()
+        let fallbackData = Data("another data".utf8)
         
         let primaryLoader = LoaderStub(.failure(anyNSError()))
         let fallbackLoader = LoaderStub(.success(fallbackData))
