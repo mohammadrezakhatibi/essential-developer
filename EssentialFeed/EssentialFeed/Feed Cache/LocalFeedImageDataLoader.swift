@@ -15,13 +15,13 @@ public final class LocalFeedImageDataLoader {
     }
 }
 
-extension LocalFeedImageDataLoader {
+extension LocalFeedImageDataLoader: FeedImageDataCache {
     
     public enum SaveError: Swift.Error {
         case failed
     }
     
-    public typealias SaveResult = (Result<Void, Error>)
+    public typealias SaveResult = FeedImageDataCache.Result
     
     public func save(_ data: Data, for url: URL, completion: @escaping (SaveResult) -> Void) {
         store.insert(data, for: url) { [weak self] result in
