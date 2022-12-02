@@ -58,6 +58,14 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
         })
     }
     
+    func test_loadImageData_deliverErrorOnLoaderFailure() {
+        let (sut, loader) = makeSUT()
+        let expectedError = anyNSError()
+        
+        expect(sut, toComplete: .failure(expectedError), when: {
+            loader.complete(with: expectedError)
+        })
+    }
     
     // MARK: - Helpers
     
@@ -117,6 +125,10 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
         
         func complete(with data: Data, at index: Int = 0) {
             messages[index].completion(.success(data))
+        }
+        
+        func complete(with error: Error, at index: Int = 0) {
+            messages[index].completion(.failure(error))
         }
     }
     
