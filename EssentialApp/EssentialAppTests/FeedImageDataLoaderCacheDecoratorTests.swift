@@ -9,10 +9,23 @@ import XCTest
 import EssentialFeed
 import EssentialApp
 
-final class FeedImageDataLoaderCacheDecorator {
+final class FeedImageDataLoaderCacheDecorator: FeedImageDataLoader {
+    
+    let decoratee: FeedImageDataLoader
     
     init(decoratee: FeedImageDataLoader) {
-        
+        self.decoratee = decoratee
+    }
+    
+    private class Task: FeedImageDataLoaderTask {
+        func cancel() {
+            
+        }
+    }
+    
+    func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
+        let task = decoratee.loadImageData(from: url, completion: completion)
+        return task
     }
 }
 
@@ -22,12 +35,22 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
         let loader = LoaderSpy()
         let _ = FeedImageDataLoaderCacheDecorator(decoratee: loader)
         
-        XCTAssertTrue(loader.messages.isEmpty)
+        XCTAssertTrue(loader.loaderURLs.isEmpty)
+    }
+    
+    func test_loadImageData_loadFromLoader() {
+        let url = anyURL()
+        let loader = LoaderSpy()
+        let sut = FeedImageDataLoaderCacheDecorator(decoratee: loader)
+        
+        _ = sut.loadImageData(from: url) { _ in }
+        
+        XCTAssertEqual(loader.loaderURLs, [url])
     }
     
     private class LoaderSpy: FeedImageDataLoader {
         
-        var messages = [Any]()
+        var loaderURLs = [URL]()
         
         private class Task: FeedImageDataLoaderTask {
             func cancel() {
@@ -36,6 +59,7 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
         }
         
         func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
+            loaderURLs.append(url)
             return Task()
         }
     }
