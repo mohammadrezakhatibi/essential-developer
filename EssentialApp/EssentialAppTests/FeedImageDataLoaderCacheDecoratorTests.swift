@@ -50,26 +50,12 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
     }
     
     func test_loadImageData_deliverDataOnLoaderSuccess() {
-        let url = anyURL()
         let (sut, loader) = makeSUT()
         let expectedData = anyData()
         
-        let exp = expectation(description: "Wait for load completion")
-        _ = sut.loadImageData(from: url, completion: { result in
-            switch result {
-            case let .success(receivedData):
-                XCTAssertEqual(expectedData, receivedData)
-                
-            default:
-                XCTFail("Expected success, got \(result) instead")
-                
-            }
-            exp.fulfill()
+        expect(sut, toComplete: .success(expectedData), when: {
+            loader.complete(with: expectedData)
         })
-        
-        loader.complete(with: expectedData)
-        
-        wait(for: [exp], timeout: 1.0)
     }
     
     
@@ -81,6 +67,29 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, loader)
+    }
+    
+    private func expect(_ sut: FeedImageDataLoaderCacheDecorator, toComplete expectedResult: FeedImageDataLoader.Result, when action: () -> Void) {
+        let url = anyURL()
+        let exp = expectation(description: "Wait for load completion")
+        _ = sut.loadImageData(from: url, completion: { receivedResult in
+            switch (expectedResult, receivedResult) {
+            case let (.success(receivedData), .success(expectedData)):
+                XCTAssertEqual(receivedData, expectedData)
+                
+            case let (.failure(receivedError), .failure(expectedResult)):
+                XCTAssertEqual(receivedError as NSError?, expectedResult as NSError?)
+                
+            default:
+                XCTFail("Expected \(expectedResult), got \(receivedResult) instead")
+                
+            }
+            exp.fulfill()
+        })
+        
+        action()
+        
+        wait(for: [exp], timeout: 1.0)
     }
     
     private class LoaderSpy: FeedImageDataLoader {
