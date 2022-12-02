@@ -17,15 +17,8 @@ final class FeedImageDataLoaderCacheDecorator: FeedImageDataLoader {
         self.decoratee = decoratee
     }
     
-    private class Task: FeedImageDataLoaderTask {
-        func cancel() {
-            
-        }
-    }
-    
     func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-        let task = decoratee.loadImageData(from: url, completion: completion)
-        return task
+        return decoratee.loadImageData(from: url, completion: completion)
     }
 }
 
@@ -46,6 +39,16 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
         XCTAssertEqual(loader.loaderURLs, [url])
     }
     
+    func test_loadImageData_cancelsLoaderTask() {
+        let url = anyURL()
+        let (sut, loader) = makeSUT()
+        
+        let task = sut.loadImageData(from: url, completion: { _ in })
+        task.cancel()
+        
+        XCTAssertEqual(loader.canceledURLs, [url])
+    }
+    
     
     // MARK: - Helpers
     
@@ -60,16 +63,21 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
     private class LoaderSpy: FeedImageDataLoader {
         
         var loaderURLs = [URL]()
+        var canceledURLs = [URL]()
         
-        private class Task: FeedImageDataLoaderTask {
+        private struct Task: FeedImageDataLoaderTask {
+            var callback: () -> Void
+            
             func cancel() {
-                
+                callback()
             }
         }
         
         func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
             loaderURLs.append(url)
-            return Task()
+            return Task { [weak self] in
+                self?.canceledURLs.append(url)
+            }
         }
     }
     
