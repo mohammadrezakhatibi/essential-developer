@@ -25,8 +25,10 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     public func display(_ viewModel: EssentialFeed.FeedErrorViewModel) {
         if let message = viewModel.message {
             self.errorView.show(message: message)
+            self.errorView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         } else {
             self.errorView.hideMessage()
+            self.errorView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 0)
         }
     }
     
@@ -37,7 +39,6 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         
         tableView.register(FeedImageCell.self, forCellReuseIdentifier: "FeedImageCell")
         tableView.prefetchDataSource = self
-        errorView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         tableView.tableHeaderView = errorView
         tableView.separatorStyle = .none
         refreshController?.refresh()
