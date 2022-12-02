@@ -49,6 +49,29 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
         XCTAssertEqual(loader.canceledURLs, [url])
     }
     
+    func test_loadImageData_deliverDataOnLoaderSuccess() {
+        let url = anyURL()
+        let (sut, loader) = makeSUT()
+        let expectedData = anyData()
+        
+        let exp = expectation(description: "Wait for load completion")
+        _ = sut.loadImageData(from: url, completion: { result in
+            switch result {
+            case let .success(receivedData):
+                XCTAssertEqual(expectedData, receivedData)
+                
+            default:
+                XCTFail("Expected success, got \(result) instead")
+                
+            }
+            exp.fulfill()
+        })
+        
+        loader.complete(with: expectedData)
+        
+        wait(for: [exp], timeout: 1.0)
+    }
+    
     
     // MARK: - Helpers
     
@@ -62,7 +85,10 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
     
     private class LoaderSpy: FeedImageDataLoader {
         
-        var loaderURLs = [URL]()
+        var messages = [(url: URL, completion: (FeedImageDataLoader.Result) -> Void)]()
+        var loaderURLs: [URL] {
+            return messages.map { $0.url }
+        }
         var canceledURLs = [URL]()
         
         private struct Task: FeedImageDataLoaderTask {
@@ -74,10 +100,14 @@ final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase {
         }
         
         func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-            loaderURLs.append(url)
+            messages.append((url, completion))
             return Task { [weak self] in
                 self?.canceledURLs.append(url)
             }
+        }
+        
+        func complete(with data: Data, at index: Int = 0) {
+            messages[index].completion(.success(data))
         }
     }
     
