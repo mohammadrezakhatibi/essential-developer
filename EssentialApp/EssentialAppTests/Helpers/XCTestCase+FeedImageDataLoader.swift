@@ -8,6 +8,7 @@
 import Foundation
 import XCTest
 import EssentialFeed
+import EssentialApp
 
 protocol FeedImageDataLoaderTestCase: XCTestCase { }
 

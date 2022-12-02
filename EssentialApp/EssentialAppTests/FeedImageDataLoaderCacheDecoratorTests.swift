@@ -9,25 +9,6 @@ import XCTest
 import EssentialFeed
 import EssentialApp
 
-final class FeedImageDataLoaderCacheDecorator: FeedImageDataLoader {
-    let decoratee: FeedImageDataLoader
-    let cache: FeedImageDataCache
-    
-    init(decoratee: FeedImageDataLoader, cache: FeedImageDataCache) {
-        self.decoratee = decoratee
-        self.cache = cache
-    }
-    
-    func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-        return decoratee.loadImageData(from: url) { [weak self] result in
-            completion(result.map { data in
-                self?.cache.save(data, for: url, completion: { _ in })
-                return data
-            })
-        }
-    }
-}
-
 final class FeedImageDataLoaderCacheDecoratorTests: XCTestCase, FeedImageDataLoaderTestCase {
     
     func test_init_doesNotLoadImageData() {
