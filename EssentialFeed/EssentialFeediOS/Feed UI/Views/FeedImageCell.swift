@@ -78,7 +78,8 @@ public final class FeedImageCell: UITableViewCell {
     }
     
     private func addLayoutAndSubviews() {
-        
+        accessibilityIdentifier = "feed-image-cell"
+        feedImageView.accessibilityIdentifier = "feed-image-cell"
         containerStackView = UIStackView()
         containerStackView?.alignment = .top
         containerStackView?.axis = .vertical
