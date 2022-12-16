@@ -13,15 +13,18 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     private var refreshController: FeedRefreshViewController?
     private(set) public var errorView = ErrorView()
     
-    var tableModel = [FeedImageCellController]() {
+    private var tableModel = [FeedImageCellController]() {
         didSet { tableView.reloadData() }
     }
         
-    convenience init(refreshController: FeedRefreshViewController) {
+    public convenience init(refreshController: FeedRefreshViewController) {
         self.init()
         self.refreshController = refreshController
     }
     
+    public func display(_ cellControllers: [FeedImageCellController]) {
+        tableModel = cellControllers
+    }
     public func display(_ viewModel: EssentialFeed.FeedErrorViewModel) {
         if let message = viewModel.message {
             self.errorView.show(message: message)
