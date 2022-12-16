@@ -47,6 +47,10 @@ extension FeedViewController {
         return refreshControl?.isRefreshing == true
     }
     
+    func renderedFeedImageData(at index: Int) -> Data? {
+        return simulateFeedImageViewVisible(at: index)?.renderedImage
+    }
+    
     var errorMessage: String? {
         return errorView.message
     }

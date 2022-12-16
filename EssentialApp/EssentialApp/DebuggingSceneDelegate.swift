@@ -59,7 +59,7 @@ private final class DebuggingHTTPClient: HTTPClient {
     
     private func makeData(for url: URL) -> Data {
         switch url.absoluteString {
-        case "http://image.con":
+        case "http://image.com":
             return makeImageData()
         
         default:
