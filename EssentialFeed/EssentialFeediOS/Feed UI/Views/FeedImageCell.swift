@@ -30,6 +30,13 @@ public final class FeedImageCell: UITableViewCell {
     }()
     
     public let feedImageContainer = UIView()
+    public lazy var pinIcon: UILabel = {
+        let pin = UILabel()
+        pin.font = UIFont.systemFont(ofSize: 14)
+        pin.text = "📍"
+        return pin
+    }()
+    
     
     public lazy var feedImageView: UIImageView = {
         let view = UIImageView()
@@ -89,18 +96,37 @@ public final class FeedImageCell: UITableViewCell {
         containerStackView?.addArrangedSubview(descriptionLabelContainer)
         
         locationContainer.addSubview(locationLabel)
-        locationLabel
+        locationContainer.addSubview(pinIcon)
+        
+        pinIcon.translatesAutoresizingMaskIntoConstraints = false
+        pinIcon
+            .widthAnchor
+            .constraint(equalToConstant: 24)
+            .isActive = true
+        pinIcon
+            .heightAnchor
+            .constraint(equalToConstant: 24)
+            .isActive = true
+        pinIcon
             .topAnchor
             .constraint(equalTo: locationContainer.topAnchor, constant: 16)
             .isActive = true
+        pinIcon
+            .leftAnchor
+            .constraint(equalTo: locationContainer.leftAnchor, constant: 16)
+            .isActive = true
         
         locationLabel
-            .widthAnchor
-            .constraint(equalTo: locationContainer.widthAnchor, constant: -40)
+            .centerYAnchor
+            .constraint(equalTo: pinIcon.centerYAnchor)
             .isActive = true
         locationLabel
-            .centerXAnchor
-            .constraint(equalTo: locationContainer.centerXAnchor)
+            .rightAnchor
+            .constraint(equalTo: locationContainer.rightAnchor, constant: -16)
+            .isActive = true
+        locationLabel
+            .leftAnchor
+            .constraint(equalTo: pinIcon.rightAnchor, constant: 4)
             .isActive = true
         
         locationLabel
