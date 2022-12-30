@@ -374,9 +374,9 @@
 			isa = PBXGroup;
 			children = (
 				D7559C0728F7FEB5001154DF /* FeedImage.swift */,
-				D7559C0928F7FFEC001154DF /* FeedLoader.swift */,
 				D762EEFE2938E93000729B47 /* FeedCache.swift */,
 				D7B02F8F293A066100AC9EC7 /* FeedImageDataCache.swift */,
+				D7559C0928F7FFEC001154DF /* FeedLoader.swift */,
 				E4D02AC529200AC400832A3C /* FeedImageDataLoader.swift */,
 			);
 			path = "Feed Feature";
