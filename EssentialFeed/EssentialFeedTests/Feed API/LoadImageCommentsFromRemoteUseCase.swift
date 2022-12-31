@@ -88,14 +88,16 @@ final class LoadImageCommentsFromRemoteUseCase: XCTestCase {
         
         let item1 = makeItem(
             id: UUID(),
-            imageURL: URL(string: "http://a-image-url.com")!
+            message: "a message",
+            createdAt: (Date(timeIntervalSince1970: 1598627222), "2020-08-28T15:07:02+00:00"),
+            username: "a username"
         )
         
         let item2 = makeItem(
             id: UUID(),
-            description: "a description",
-            location: "a location",
-            imageURL: URL(string: "http://a-image-url.com")!
+            message: "another message",
+            createdAt: (Date(timeIntervalSince1970: 1598627222), "2020-08-28T15:07:02+00:00"),
+            username: "another username"
         )
         
         let items = [item1.model, item2.model]
@@ -169,15 +171,17 @@ final class LoadImageCommentsFromRemoteUseCase: XCTestCase {
     }
     
     
-    private func makeItem(id: UUID, description: String? = nil, location: String? = nil, imageURL: URL) -> (model: FeedImage, json: [String: Any]) {
+    private func makeItem(id: UUID, message: String, createdAt: (date: Date, iso8601String: String), username: String) -> (model: ImageComment, json: [String: Any]) {
         
-        let item = FeedImage(id: id, description: description, location: location, url: imageURL)
+        let item = ImageComment(id: id, message: message, createdAt: createdAt.date, username: username)
         
         let json = [
             "id": id.uuidString,
-            "description": description,
-            "location": location,
-            "image": imageURL.absoluteString
+            "message": message,
+            "created_at": createdAt.iso8601String,
+            "author": [
+                "username": username
+            ]
         ].compactMapValues { $0 }
         
         return (item, json)
