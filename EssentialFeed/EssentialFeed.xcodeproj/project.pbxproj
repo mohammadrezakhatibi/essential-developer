@@ -321,10 +321,8 @@
 				D71658E92934EC9A00CFDE36 /* Helpers */,
 				D734DA0A28F8153B0092A4B7 /* RemoteFeedLoader.swift */,
 				D71658E72934E6D500CFDE36 /* RemoteFeedImageDataLoader.swift */,
-				E4E7A5DD295F62B80064D649 /* RemoteImageCommentLoader.swift */,
 				D705730C28F9882400B549BF /* FeedItemsMapper.swift */,
 				E4D2BE18290C1CEB006C644B /* RemoteFeedItem.swift */,
-				E4E7A5DF295F62FE0064D649 /* ImageCommentMapper.swift */,
 			);
 			path = "Feed API";
 			sourceTree = "<group>";
@@ -362,6 +360,7 @@
 				E4CD2B60296CAF38007A0303 /* Shared API */,
 				E4CD2B61296CAF4F007A0303 /* Shared API Infra */,
 				E490F5712960A8280075BB0A /* Image Comments Feature */,
+				E4CD2B65296CB04E007A0303 /* Image Comments API */,
 				D7F75B4E2930F144009FC75A /* Feed Presentation */,
 				D7E48943290934D400A9A24E /* Feed Cache */,
 				D734DA0928F815120092A4B7 /* Feed API */,
@@ -375,6 +374,7 @@
 			children = (
 				E4CD2B62296CAF6B007A0303 /* Shared API */,
 				E4CD2B64296CAF7C007A0303 /* Shared API Infra */,
+				E4CD2B66296CB1CE007A0303 /* Image Comments API */,
 				D7F75B442930BD75009FC75A /* Feed Presentation */,
 				D77A4E1128FD89EE00128911 /* Helpers */,
 				D7D74DC12907F95E0010B134 /* Feed Cache */,
@@ -408,7 +408,6 @@
 			children = (
 				D7DAF82D291BB3AA0003115C /* Helpers */,
 				D734DA0728F80C860092A4B7 /* LoadFeedFromRemoteUseCase.swift */,
-				E4E7A5DB295F623D0064D649 /* LoadImageCommentsFromRemoteUseCase.swift */,
 				D71658E32934AEE800CFDE36 /* LoadFeedImageDataFromRemoteUseCaseTests.swift */,
 			);
 			path = "Feed API";
@@ -548,6 +547,23 @@
 				D77A4E0F28FD52E400128911 /* URLSessionHTTPClientTests.swift */,
 			);
 			path = "Shared API Infra";
+			sourceTree = "<group>";
+		};
+		E4CD2B65296CB04E007A0303 /* Image Comments API */ = {
+			isa = PBXGroup;
+			children = (
+				E4E7A5DD295F62B80064D649 /* RemoteImageCommentLoader.swift */,
+				E4E7A5DF295F62FE0064D649 /* ImageCommentMapper.swift */,
+			);
+			path = "Image Comments API";
+			sourceTree = "<group>";
+		};
+		E4CD2B66296CB1CE007A0303 /* Image Comments API */ = {
+			isa = PBXGroup;
+			children = (
+				E4E7A5DB295F623D0064D649 /* LoadImageCommentsFromRemoteUseCase.swift */,
+			);
+			path = "Image Comments API";
 			sourceTree = "<group>";
 		};
 		E4D02ABF29200A2100832A3C /* Views */ = {
