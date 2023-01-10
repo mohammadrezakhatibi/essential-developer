@@ -72,10 +72,5 @@ class FeedItemsMapperTests: XCTestCase {
         ].compactMapValues { $0 }
         
         return (item, json)
-        
-    }
-    
-    private func failure(_ error: RemoteFeedLoader.Error) -> RemoteFeedLoader.Result {
-        return .failure(error)
     }
 }

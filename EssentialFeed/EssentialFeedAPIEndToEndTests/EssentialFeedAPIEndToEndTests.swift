@@ -61,7 +61,7 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
                                line: UInt = #line) -> FeedLoader.Result? {
         let url = feedTestServerURL.appendingPathComponent("feed.json")
         let client = URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
-        let loader = RemoteFeedLoader(url: url, client: client)
+        let loader = RemoteLoader(url: url, client: client, mapper: FeedItemsMapper.map)
         
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(client, file: file, line: line)
