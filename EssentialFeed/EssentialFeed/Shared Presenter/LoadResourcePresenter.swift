@@ -8,7 +8,7 @@
 import Foundation
 
 public protocol ResourceView {
-    func display(_ viewModel: FeedViewModel)
+    func display(_ viewModel: String)
 }
 
 public protocol ResourceLoadingView {
@@ -20,9 +20,11 @@ public protocol ResourceErrorView {
 }
 
 public final class LoadResourcePresenter {
+    public typealias Mapper = (String) -> String
     private let resourceView: ResourceView
     private let loadingView: ResourceLoadingView
     private let errorView: ResourceErrorView
+    private let mapper: Mapper
     
     private var resourceLoadError: String {
         return NSLocalizedString(
@@ -32,10 +34,11 @@ public final class LoadResourcePresenter {
             comment: "Error message displayed...")
     }
     
-    public init(resourceView: ResourceView, loadingView: ResourceLoadingView, errorView: ResourceErrorView) {
+    public init(resourceView: ResourceView, loadingView: ResourceLoadingView, errorView: ResourceErrorView, mapper: @escaping (String) -> String) {
         self.resourceView = resourceView
         self.loadingView = loadingView
         self.errorView = errorView
+        self.mapper = mapper
     }
     
     public func didStartLoading() {
@@ -43,8 +46,8 @@ public final class LoadResourcePresenter {
         loadingView.display(FeedLoadingViewModel(isLoading: true))
     }
     
-    public func didFinishLoadingFeed(with feed: [FeedImage]) {
-        resourceView.display(FeedViewModel(feed: feed))
+    public func didFinishLoading(with resource: String) {
+        resourceView.display(mapper(resource))
         loadingView.display(FeedLoadingViewModel(isLoading: false))
     }
     
