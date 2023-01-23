@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D754B6D3297FC4FB007A422C /* CombineHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754B6D2297FC4FB007A422C /* CombineHelpers.swift */; };
 		D762EEFD2938E20E00729B47 /* XCTestCase+FeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D762EEFC2938E20E00729B47 /* XCTestCase+FeedLoader.swift */; };
 		D762EF012938EA3500729B47 /* FeedLoaderCacheDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D762EF002938EA3500729B47 /* FeedLoaderCacheDecorator.swift */; };
 		D77888A92938A5BC000AFFFA /* FeedLoaderWithFallbackComposite.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77888A82938A5BB000AFFFA /* FeedLoaderWithFallbackComposite.swift */; };
@@ -84,6 +85,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D754B6D2297FC4FB007A422C /* CombineHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CombineHelpers.swift; sourceTree = "<group>"; };
 		D762EEFC2938E20E00729B47 /* XCTestCase+FeedLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FeedLoader.swift"; sourceTree = "<group>"; };
 		D762EF002938EA3500729B47 /* FeedLoaderCacheDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderCacheDecorator.swift; sourceTree = "<group>"; };
 		D77888A82938A5BB000AFFFA /* FeedLoaderWithFallbackComposite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderWithFallbackComposite.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 			children = (
 				D77A906029376CB90027A16F /* AppDelegate.swift */,
 				D77A906229376CB90027A16F /* SceneDelegate.swift */,
+				D754B6D2297FC4FB007A422C /* CombineHelpers.swift */,
 				E48926FF294BBB4600AC2DDA /* DebuggingSceneDelegate.swift */,
 				D77A906429376CB90027A16F /* ViewController.swift */,
 				D7ED4F6E294CA5D700310A1C /* FeedUIComposer.swift */,
@@ -395,6 +398,7 @@
 				D7ED4F78294CA5D800310A1C /* MainQueueDispatchDecorator.swift in Sources */,
 				D77888A92938A5BC000AFFFA /* FeedLoaderWithFallbackComposite.swift in Sources */,
 				D7ED4F75294CA5D800310A1C /* FeedViewAdapter.swift in Sources */,
+				D754B6D3297FC4FB007A422C /* CombineHelpers.swift in Sources */,
 				D762EF012938EA3500729B47 /* FeedLoaderCacheDecorator.swift in Sources */,
 				E4892700294BBB4600AC2DDA /* DebuggingSceneDelegate.swift in Sources */,
 				D77A906329376CB90027A16F /* SceneDelegate.swift in Sources */,

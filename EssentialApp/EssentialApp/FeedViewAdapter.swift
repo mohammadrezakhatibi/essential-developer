@@ -12,9 +12,9 @@ import EssentialFeediOS
 
 public final class FeedViewAdapter: ResourceView {
     private weak var controller: FeedViewController?
-    private let loader: FeedImageDataLoader
+    private let loader: (URL) -> FeedImageDataLoader.Publisher
     
-    init(forwardingTo controller: FeedViewController, loader: FeedImageDataLoader) {
+    init(forwardingTo controller: FeedViewController, loader: @escaping (URL) -> FeedImageDataLoader.Publisher) {
         self.controller = controller
         self.loader = loader
     }
