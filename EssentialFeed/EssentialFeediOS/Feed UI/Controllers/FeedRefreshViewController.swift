@@ -12,7 +12,7 @@ public protocol FeedRefreshViewControllerDelegate {
     func didRequestFeedRefresh()
 }
 
-public final class FeedRefreshViewController: NSObject, FeedLoadingView {
+public final class FeedRefreshViewController: NSObject, ResourceLoadingView {
     private(set) lazy var view = loadView()
     
     private var delegate: FeedRefreshViewControllerDelegate?

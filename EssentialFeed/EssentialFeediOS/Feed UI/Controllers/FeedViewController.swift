@@ -8,7 +8,7 @@
 import UIKit
 import EssentialFeed
 
-public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, FeedErrorView {
+public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceErrorView {
     
     private var refreshController: FeedRefreshViewController?
     private(set) public var errorView = ErrorView()
