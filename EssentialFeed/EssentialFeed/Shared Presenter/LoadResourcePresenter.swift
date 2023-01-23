@@ -12,10 +12,6 @@ public protocol ResourceView {
     func display(_ viewModel: ResourceViewModel)
 }
 
-public protocol ResourceLoadingView {
-    func display(_ viewModel: FeedLoadingViewModel)
-}
-
 public protocol ResourceErrorView {
     func display(_ viewModel: FeedErrorViewModel)
 }
@@ -44,16 +40,16 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
     
     public func didStartLoading() {
         errorView.display(FeedErrorViewModel(message: .none))
-        loadingView.display(FeedLoadingViewModel(isLoading: true))
+        loadingView.display(ResourceLoadingViewModel(isLoading: true))
     }
     
     public func didFinishLoading(with resource: Resource) {
         resourceView.display(mapper(resource))
-        loadingView.display(FeedLoadingViewModel(isLoading: false))
+        loadingView.display(ResourceLoadingViewModel(isLoading: false))
     }
     
     public func didFinishLoading(with error: Error) {
-        loadingView.display(FeedLoadingViewModel(isLoading: false))
+        loadingView.display(ResourceLoadingViewModel(isLoading: false))
         errorView.display(FeedErrorViewModel(message: Self.loadError))
     }
 }

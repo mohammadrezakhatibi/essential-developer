@@ -25,7 +25,7 @@ public final class FeedRefreshViewController: NSObject, FeedLoadingView {
         delegate?.didRequestFeedRefresh()
     }
 
-    public func display(_ viewModel: FeedLoadingViewModel) {
+    public func display(_ viewModel: ResourceLoadingViewModel) {
         guard Thread.isMainThread else {
             return DispatchQueue.main.async { [weak self] in self?.display(viewModel) }
         }

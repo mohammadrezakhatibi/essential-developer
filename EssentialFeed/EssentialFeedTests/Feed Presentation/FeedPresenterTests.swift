@@ -84,7 +84,7 @@ final class FeedPresenterTests: XCTestCase {
             messages.insert(.display(feed: viewModel.feed))
         }
         
-        func display(_ viewModel: FeedLoadingViewModel) {
+        func display(_ viewModel: ResourceLoadingViewModel) {
             messages.insert(.display(isLoading: viewModel.isLoading))
         }
         
