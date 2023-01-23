@@ -28,7 +28,7 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
         loadingControllers = [:]
         tableModel = cellControllers
     }
-    public func display(_ viewModel: EssentialFeed.FeedErrorViewModel) {
+    public func display(_ viewModel: EssentialFeed.ResourceErrorViewModel) {
         if let message = viewModel.message {
             self.errorView.show(message: message)
             self.errorView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
