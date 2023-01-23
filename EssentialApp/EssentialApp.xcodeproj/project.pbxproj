@@ -37,7 +37,7 @@
 		D7ED4F76294CA5D800310A1C /* WeakVirtualProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ED4F6F294CA5D700310A1C /* WeakVirtualProxy.swift */; };
 		D7ED4F77294CA5D800310A1C /* FeedImageDataLoaderPresentationAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ED4F70294CA5D800310A1C /* FeedImageDataLoaderPresentationAdapter.swift */; };
 		D7ED4F78294CA5D800310A1C /* MainQueueDispatchDecorator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ED4F73294CA5D800310A1C /* MainQueueDispatchDecorator.swift */; };
-		D7ED4F79294CA5D800310A1C /* FeedLoaderPresentationAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ED4F71294CA5D800310A1C /* FeedLoaderPresentationAdapter.swift */; };
+		D7ED4F79294CA5D800310A1C /* LoadResourcePresentationAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ED4F71294CA5D800310A1C /* LoadResourcePresentationAdapter.swift */; };
 		D7ED4F82294CA60900310A1C /* FeedViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ED4F7B294CA60700310A1C /* FeedViewController+Helpers.swift */; };
 		D7ED4F83294CA60900310A1C /* FeedUIIntegrationTests+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ED4F7F294CA60800310A1C /* FeedUIIntegrationTests+Helpers.swift */; };
 		D7ED4F84294CA60900310A1C /* UIControl+Simulate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7ED4F7C294CA60800310A1C /* UIControl+Simulate.swift */; };
@@ -114,7 +114,7 @@
 		D7ED4F6E294CA5D700310A1C /* FeedUIComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedUIComposer.swift; sourceTree = "<group>"; };
 		D7ED4F6F294CA5D700310A1C /* WeakVirtualProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakVirtualProxy.swift; sourceTree = "<group>"; };
 		D7ED4F70294CA5D800310A1C /* FeedImageDataLoaderPresentationAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoaderPresentationAdapter.swift; sourceTree = "<group>"; };
-		D7ED4F71294CA5D800310A1C /* FeedLoaderPresentationAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLoaderPresentationAdapter.swift; sourceTree = "<group>"; };
+		D7ED4F71294CA5D800310A1C /* LoadResourcePresentationAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadResourcePresentationAdapter.swift; sourceTree = "<group>"; };
 		D7ED4F72294CA5D800310A1C /* FeedViewAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewAdapter.swift; sourceTree = "<group>"; };
 		D7ED4F73294CA5D800310A1C /* MainQueueDispatchDecorator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainQueueDispatchDecorator.swift; sourceTree = "<group>"; };
 		D7ED4F7A294CA60700310A1C /* FeedImageCell+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FeedImageCell+Helpers.swift"; sourceTree = "<group>"; };
@@ -208,7 +208,7 @@
 				D77A906429376CB90027A16F /* ViewController.swift */,
 				D7ED4F6E294CA5D700310A1C /* FeedUIComposer.swift */,
 				D7ED4F73294CA5D800310A1C /* MainQueueDispatchDecorator.swift */,
-				D7ED4F71294CA5D800310A1C /* FeedLoaderPresentationAdapter.swift */,
+				D7ED4F71294CA5D800310A1C /* LoadResourcePresentationAdapter.swift */,
 				D7ED4F6F294CA5D700310A1C /* WeakVirtualProxy.swift */,
 				D7ED4F70294CA5D800310A1C /* FeedImageDataLoaderPresentationAdapter.swift */,
 				D7ED4F72294CA5D800310A1C /* FeedViewAdapter.swift */,
@@ -399,7 +399,7 @@
 				E4892700294BBB4600AC2DDA /* DebuggingSceneDelegate.swift in Sources */,
 				D77A906329376CB90027A16F /* SceneDelegate.swift in Sources */,
 				D77888AD2938BD5C000AFFFA /* FeedImageDataLoaderWithFallbackComposite.swift in Sources */,
-				D7ED4F79294CA5D800310A1C /* FeedLoaderPresentationAdapter.swift in Sources */,
+				D7ED4F79294CA5D800310A1C /* LoadResourcePresentationAdapter.swift in Sources */,
 				D7B02F92293A06B200AC9EC7 /* FeedImageDataLoaderCacheDecorator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
