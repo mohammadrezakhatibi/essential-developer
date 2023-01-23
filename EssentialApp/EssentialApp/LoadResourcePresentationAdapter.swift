@@ -10,10 +10,10 @@ import EssentialFeediOS
 
 public final class LoadResourcePresentationAdapter<Resource, View: ResourceView> {
     
-    private let loader: FeedLoader
+    private let loader: () -> FeedLoader.Publisher
     var presenter: LoadResourcePresenter<Resource, View>?
     
-    public init(loader: FeedLoader) {
+    init(loader: @escaping () -> FeedLoader.Publisher) {
         self.loader = loader
     }
     
@@ -23,13 +23,16 @@ extension LoadResourcePresentationAdapter: FeedRefreshViewControllerDelegate whe
 
     public func didRequestFeedRefresh() {
         presenter?.didStartLoading()
-        loader.load { [weak self] result in
-            switch result {
-            case let .success(resource):
-                self?.presenter?.didFinishLoading(with: resource)
-            case let .failure(error):
-                self?.presenter?.didFinishLoading(with: error)
+        
+        loader().sink { completion in
+            switch completion {
+                case .finished:
+                    break
+                case let .failure(error):
+                    self.presenter?.didFinishLoading(with: error)
             }
+        } receiveValue: { [weak self] resource in
+            self?.presenter?.didFinishLoading(with: resource)
         }
     }
 }
