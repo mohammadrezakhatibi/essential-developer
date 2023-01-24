@@ -33,6 +33,13 @@ extension WeakRefVirtualProxy: ResourceErrorView where T: ResourceErrorView {
     }
 }
 
+extension WeakRefVirtualProxy: ResourceView where T: ResourceView, T.ResourceViewModel == UIImage {
+    public func display(_ viewModel: UIImage) {
+        object?.display(viewModel)
+    }
+}
+
+
 extension WeakRefVirtualProxy: FeedImageView where T: FeedImageView, T.Image == UIImage {
     public func display(_ viewModel: FeedImageViewModel<UIImage>) {
         object?.display(viewModel)

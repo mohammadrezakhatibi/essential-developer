@@ -13,7 +13,7 @@ public protocol ResourceView {
 }
 
 public final class LoadResourcePresenter<Resource, View: ResourceView> {
-    public typealias Mapper = (Resource) -> View.ResourceViewModel
+    public typealias Mapper = (Resource) throws -> View.ResourceViewModel
     private let resourceView: View
     private let loadingView: ResourceLoadingView
     private let errorView: ResourceErrorView
@@ -27,7 +27,7 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
             comment: "Error message displayed when can not load the resource from server...")
     }
     
-    public init(resourceView: View, loadingView: ResourceLoadingView, errorView: ResourceErrorView, mapper: @escaping (Resource) -> View.ResourceViewModel) {
+    public init(resourceView: View, loadingView: ResourceLoadingView, errorView: ResourceErrorView, mapper: @escaping Mapper) {
         self.resourceView = resourceView
         self.loadingView = loadingView
         self.errorView = errorView
@@ -40,8 +40,12 @@ public final class LoadResourcePresenter<Resource, View: ResourceView> {
     }
     
     public func didFinishLoading(with resource: Resource) {
-        resourceView.display(mapper(resource))
-        loadingView.display(ResourceLoadingViewModel(isLoading: false))
+        do {
+            resourceView.display(try mapper(resource))
+            loadingView.display(ResourceLoadingViewModel(isLoading: false))
+        } catch {
+            didFinishLoading(with: error)
+        }
     }
     
     public func didFinishLoading(with error: Error) {

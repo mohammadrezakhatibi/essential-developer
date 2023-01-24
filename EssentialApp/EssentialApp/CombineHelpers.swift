@@ -51,8 +51,8 @@ public extension FeedImageDataCache {
 }
 
 
-public extension RemoteLoader where Resource == [FeedImage] {
-    typealias Publisher = AnyPublisher<[FeedImage], Swift.Error>
+public extension RemoteLoader {
+    typealias Publisher = AnyPublisher<Resource, Swift.Error>
     
     func loadPublisher() -> Publisher {
         Deferred {

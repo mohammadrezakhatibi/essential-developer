@@ -57,7 +57,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return httpClient
     }
     
-    private func makeRemoteFeedLoaderWithLocalFallback() -> RemoteLoader.Publisher {
+    private func makeRemoteFeedLoaderWithLocalFallback() -> RemoteLoader<[FeedImage]>.Publisher {
         let localFeedLoader = LocalFeedLoader(store: store, currentDate: Date.init)
         
         return remoteFeedLoader

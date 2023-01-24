@@ -11,19 +11,15 @@ import Combine
 
 public final class LoadResourcePresentationAdapter<Resource, View: ResourceView> {
     
-    private let loader: () -> RemoteLoader.Publisher
+    private let loader: () -> RemoteLoader<Resource>.Publisher
     var presenter: LoadResourcePresenter<Resource, View>?
     private var cancellable: Cancellable?
     
-    init(loader: @escaping () -> RemoteLoader.Publisher) {
+    init(loader: @escaping () -> RemoteLoader<Resource>.Publisher) {
         self.loader = loader
     }
     
-}
-
-extension LoadResourcePresentationAdapter: FeedRefreshViewControllerDelegate where Resource == [FeedImage] {
-
-    public func didRequestFeedRefresh() {
+    func loadResource() {
         presenter?.didStartLoading()
         
         cancellable = loader().sink { [weak self] completion in
@@ -36,5 +32,24 @@ extension LoadResourcePresentationAdapter: FeedRefreshViewControllerDelegate whe
         } receiveValue: { [weak self] resource in
             self?.presenter?.didFinishLoading(with: resource)
         }
+    }
+}
+
+extension LoadResourcePresentationAdapter: FeedRefreshViewControllerDelegate where Resource == [FeedImage] {
+
+    public func didRequestFeedRefresh() {
+        loadResource()
+    }
+}
+
+extension LoadResourcePresentationAdapter: FeedImageCellControllerDelegate {
+    
+    public func didRequestImage() {
+        loadResource()
+    }
+    
+    public func didCancelImageRequest() {
+        cancellable?.cancel()
+        cancellable = nil
     }
 }
