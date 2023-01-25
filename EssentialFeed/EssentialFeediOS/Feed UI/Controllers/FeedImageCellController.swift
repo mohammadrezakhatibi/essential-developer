@@ -27,6 +27,7 @@ public final class FeedImageCellController: CellController, ResourceView, Resour
     }
     
     public func view(in tableView: UITableView) -> UITableViewCell {
+        tableView.register(for: FeedImageCell.self)
         cell = tableView.dequeueReusableCell()
         display()
         delegate.didRequestImage()
@@ -83,5 +84,10 @@ extension UITableView {
     func dequeueReusableCell<T: UITableViewCell>() -> T {
         let identifier = String(describing: T.self)
         return dequeueReusableCell(withIdentifier: identifier) as! T
+    }
+    
+    func register<T: UITableViewCell>(for cell: T.Type) {
+        let identifier = String(describing: T.self)
+        register(T.self, forCellReuseIdentifier: identifier)
     }
 }

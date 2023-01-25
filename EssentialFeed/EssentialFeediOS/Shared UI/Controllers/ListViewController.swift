@@ -51,11 +51,8 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
         refreshControl = refreshController?.view
         
-        tableView.register(FeedImageCell.self, forCellReuseIdentifier: "FeedImageCell")
-        tableView.register(ImageCommentCell.self, forCellReuseIdentifier: "ImageCommentCell")
         tableView.prefetchDataSource = self
         tableView.tableHeaderView = errorView
         tableView.separatorStyle = .none

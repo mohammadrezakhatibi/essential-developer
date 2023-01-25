@@ -12,18 +12,19 @@ public final class ImageCommentCell: UITableViewCell {
     
     public lazy var usernameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 180/256, green: 180/256, blue: 180/256, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.numberOfLines = 2
+        label.textColor = UIColor.label
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.numberOfLines = 1
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     public lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor(red: 180/256, green: 180/256, blue: 180/256, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.numberOfLines = 2
+        label.textColor = UIColor.secondaryLabel
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.numberOfLines = 1
+        label.textAlignment = .right
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -33,12 +34,12 @@ public final class ImageCommentCell: UITableViewCell {
         label.textColor = .black
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = UIColor(red: 88/256, green: 88/256, blue: 88/256, alpha: 1)
+        label.font = UIFont.systemFont(ofSize: 16)
+        label.textColor = UIColor.label
         return label
     }()
     
-    private var containerStackView: UIStackView?
+    private var containerStackView: UIStackView!
     
     private let descriptionLabelContainer = UIView()
     
@@ -57,44 +58,50 @@ public final class ImageCommentCell: UITableViewCell {
         containerStackView = UIStackView()
         containerStackView?.alignment = .top
         containerStackView?.axis = .vertical
+        containerStackView.spacing = 8
         containerStackView?.distribution = .fill
         containerStackView?.addArrangedSubview(headerStackView)
-        containerStackView?.addArrangedSubview(descriptionLabelContainer)
+        containerStackView?.addArrangedSubview(descriptionLabel)
         
+        dateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        dateLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        usernameLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        usernameLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         headerStackView.alignment = .center
         headerStackView.axis = .horizontal
-        headerStackView.distribution = .fill
+        headerStackView.distribution = .equalSpacing
+        headerStackView.spacing = 16
+        
+        headerStackView.addArrangedSubview(usernameLabel)
+        headerStackView.addArrangedSubview(dateLabel)
         
         
-        descriptionLabelContainer.addSubview(descriptionLabel)
-        descriptionLabel
-            .centerXAnchor
-            .constraint(equalTo: descriptionLabelContainer.centerXAnchor)
-            .isActive = true
-        descriptionLabel
-            .topAnchor
-            .constraint(equalTo: descriptionLabelContainer.topAnchor)
-            .isActive = true
-        descriptionLabel
-            .bottomAnchor
-            .constraint(equalTo: descriptionLabelContainer.bottomAnchor, constant: 0)
-            .isActive = true
-        descriptionLabel
-            .leadingAnchor
-            .constraint(equalTo: descriptionLabelContainer.leadingAnchor, constant: 16)
-            .isActive = true
-        descriptionLabel
-            .trailingAnchor
-            .constraint(equalTo: descriptionLabelContainer.trailingAnchor, constant: -16)
+        headerStackView.translatesAutoresizingMaskIntoConstraints = false
+        headerStackView
+            .widthAnchor
+            .constraint(equalTo: containerStackView.widthAnchor)
             .isActive = true
         
         
         addSubview(containerStackView!)
-        containerStackView?.stickToEdge(of: self)
-    }
-    
-    public override func prepareForReuse() {
-        containerStackView = nil
+        
+        containerStackView.translatesAutoresizingMaskIntoConstraints = false
+        containerStackView
+            .widthAnchor
+            .constraint(equalTo: widthAnchor, constant: -32)
+            .isActive = true
+        containerStackView
+            .centerXAnchor
+            .constraint(equalTo: centerXAnchor)
+            .isActive = true
+        containerStackView
+            .topAnchor
+            .constraint(equalTo: topAnchor)
+            .isActive = true
+        containerStackView
+            .bottomAnchor
+            .constraint(equalTo: bottomAnchor, constant: -32)
+            .isActive = true
     }
 }
 
@@ -102,7 +109,7 @@ private extension UIView {
     func stickToEdge(of parent: UIView, constant: CGFloat = 0) {
         translatesAutoresizingMaskIntoConstraints = false
         widthAnchor.constraint(equalTo: parent.widthAnchor, constant: constant).isActive = true
-        heightAnchor.constraint(equalTo: parent.heightAnchor, constant: constant).isActive = true
+        heightAnchor.constraint(equalTo: parent.heightAnchor ).isActive = true
         centerXAnchor.constraint(equalTo: parent.centerXAnchor).isActive = true
         centerYAnchor.constraint(equalTo: parent.centerYAnchor).isActive = true
     }
