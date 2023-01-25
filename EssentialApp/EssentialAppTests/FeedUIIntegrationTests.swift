@@ -319,7 +319,7 @@ final class FeedUIIntegrationTests: XCTestCase {
     
     //MARK: - Helper
     
-    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: FeedViewController, loader: LoaderSpy) {
+    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
         let loader = LoaderSpy()
         let sut = FeedUIComposer.feedComposeWith(feedLoader: loader.loadPublisher, imageLoader: loader.loadImageDataPublisher)
         trackForMemoryLeaks(loader, file: file, line: line)
@@ -331,7 +331,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         return FeedImage(id: UUID(), description: description, location: location, url: url)
     }
     
-    private func assertThat(_ sut: FeedViewController, hasViewConfiguredFor image: FeedImage, at index: Int, file: StaticString = #filePath, line: UInt = #line) {
+    private func assertThat(_ sut: ListViewController, hasViewConfiguredFor image: FeedImage, at index: Int, file: StaticString = #filePath, line: UInt = #line) {
         let view = sut.feedImageView(at: index)
         
         guard let cell = view as? FeedImageCell else {
@@ -347,7 +347,7 @@ final class FeedUIIntegrationTests: XCTestCase {
         XCTAssertEqual(cell.descriptionText, image.description, "Expected description text to be \(String(describing: image.description)) for image view at index \(index)", file: file, line: line)
     }
     
-    private func assertThat(_ sut: FeedViewController, isRendering feed: [FeedImage], file: StaticString = #filePath, line: UInt = #line) {
+    private func assertThat(_ sut: ListViewController, isRendering feed: [FeedImage], file: StaticString = #filePath, line: UInt = #line) {
         
         sut.view.enforceLayoutCycle()
 
