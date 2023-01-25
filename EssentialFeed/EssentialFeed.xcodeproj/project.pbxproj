@@ -39,6 +39,9 @@
 		D719B0042936528900CBD583 /* CoreDataFeedStore+FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = D719B0032936528900CBD583 /* CoreDataFeedStore+FeedStore.swift */; };
 		D727BF9E29813781009EF37A /* FeedSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D727BF9D29813781009EF37A /* FeedSnapshotTests.swift */; };
 		D727BFA02981419E009EF37A /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D727BF9F2981419E009EF37A /* Feed.storyboard */; };
+		D727BFA329815523009EF37A /* UIImage+Make.swift in Sources */ = {isa = PBXBuildFile; fileRef = D727BFA229815523009EF37A /* UIImage+Make.swift */; };
+		D727BFA5298165F4009EF37A /* UIViewController+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D727BFA4298165F4009EF37A /* UIViewController+Snapshot.swift */; };
+		D727BFA72981663F009EF37A /* XCTestCase+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = D727BFA62981663F009EF37A /* XCTestCase+Snapshot.swift */; };
 		D734DA0828F80C860092A4B7 /* FeedItemsMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D734DA0728F80C860092A4B7 /* FeedItemsMapperTests.swift */; };
 		D742FA00297EB675009C989A /* ResourceLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D742F9FF297EB675009C989A /* ResourceLoadingView.swift */; };
 		D742FA02297EB6D0009C989A /* ResourceErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D742FA01297EB6D0009C989A /* ResourceErrorView.swift */; };
@@ -181,6 +184,9 @@
 		D719B0032936528900CBD583 /* CoreDataFeedStore+FeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreDataFeedStore+FeedStore.swift"; sourceTree = "<group>"; };
 		D727BF9D29813781009EF37A /* FeedSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSnapshotTests.swift; sourceTree = "<group>"; };
 		D727BF9F2981419E009EF37A /* Feed.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Feed.storyboard; sourceTree = "<group>"; };
+		D727BFA229815523009EF37A /* UIImage+Make.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Make.swift"; sourceTree = "<group>"; };
+		D727BFA4298165F4009EF37A /* UIViewController+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Snapshot.swift"; sourceTree = "<group>"; };
+		D727BFA62981663F009EF37A /* XCTestCase+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCTestCase+Snapshot.swift"; sourceTree = "<group>"; };
 		D734DA0728F80C860092A4B7 /* FeedItemsMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemsMapperTests.swift; sourceTree = "<group>"; };
 		D742F9FF297EB675009C989A /* ResourceLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceLoadingView.swift; sourceTree = "<group>"; };
 		D742FA01297EB6D0009C989A /* ResourceErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceErrorView.swift; sourceTree = "<group>"; };
@@ -329,6 +335,16 @@
 			isa = PBXGroup;
 			children = (
 				D71658EA2934ECA700CFDE36 /* HTTPURLResponse+StatusCode.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		D727BFA129815515009EF37A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D727BFA229815523009EF37A /* UIImage+Make.swift */,
+				D727BFA4298165F4009EF37A /* UIViewController+Snapshot.swift */,
+				D727BFA62981663F009EF37A /* XCTestCase+Snapshot.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -674,6 +690,7 @@
 		E4E2F3B6291AED4A00A9680D /* EssentialFeediOSTests */ = {
 			isa = PBXGroup;
 			children = (
+				D727BFA129815515009EF37A /* Helpers */,
 				D727BF9D29813781009EF37A /* FeedSnapshotTests.swift */,
 			);
 			path = EssentialFeediOSTests;
@@ -1039,7 +1056,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D727BFA329815523009EF37A /* UIImage+Make.swift in Sources */,
 				E4E2F3CA291AF5CF00A9680D /* XCTestCase+MemoryLeakTracking.swift in Sources */,
+				D727BFA72981663F009EF37A /* XCTestCase+Snapshot.swift in Sources */,
+				D727BFA5298165F4009EF37A /* UIViewController+Snapshot.swift in Sources */,
 				D727BF9E29813781009EF37A /* FeedSnapshotTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

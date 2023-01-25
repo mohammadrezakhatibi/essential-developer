@@ -26,14 +26,18 @@ public final class FeedImageCellController: ResourceView, ResourceLoadingView, R
         self.viewModel = viewModel
     }
     
-    func view(in tableView: UITableView) -> UITableViewCell {
+    public func view(in tableView: UITableView) -> UITableViewCell {
         cell = tableView.dequeueReusableCell()
+        display()
+        delegate.didRequestImage()
+        return cell!
+    }
+    
+    public func display() {
         cell?.locationContainer.isHidden = !viewModel.hasLocation
         cell?.locationLabel.text = viewModel.location
         cell?.descriptionLabel.text = viewModel.description
         cell?.onRetry = delegate.didRequestImage
-        delegate.didRequestImage()
-        return cell!
     }
     
     func preload() {

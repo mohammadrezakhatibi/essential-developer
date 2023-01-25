@@ -49,7 +49,9 @@ public final class FeedImageCell: UITableViewCell {
     
     private(set) public lazy var feedImageRetryButton: UIButton = {
         let button = UIButton()
+        button.setImage(UIImage(systemName: "exclamationmark.arrow.circlepath"), for: .normal)
         button.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
+        button.setTitleColor(UIColor(red: 220/256, green: 220/256, blue: 220/256, alpha: 1), for: .normal )
         return button
     }()
     
@@ -180,6 +182,29 @@ public final class FeedImageCell: UITableViewCell {
         loadingIndicator
             .centerYAnchor
             .constraint(equalTo: feedImageContainer.centerYAnchor)
+            .isActive = true
+        
+        feedImageRetryButton.isHidden = true
+        feedImageRetryButton.translatesAutoresizingMaskIntoConstraints = false
+        feedImageContainer.addSubview(feedImageRetryButton)
+        feedImageRetryButton
+            .centerXAnchor
+            .constraint(equalTo: feedImageContainer.centerXAnchor)
+            .isActive = true
+        
+        feedImageRetryButton
+            .centerYAnchor
+            .constraint(equalTo: feedImageContainer.centerYAnchor)
+            .isActive = true
+        
+        feedImageRetryButton
+            .widthAnchor
+            .constraint(equalToConstant: 44)
+            .isActive = true
+        
+        feedImageRetryButton
+            .heightAnchor
+            .constraint(equalToConstant: 44)
             .isActive = true
         
         addSubview(containerStackView!)

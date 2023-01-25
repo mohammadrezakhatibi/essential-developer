@@ -18,8 +18,9 @@ public final class ErrorView: UIView {
     convenience init() {
         self.init(frame: .zero)
         self.backgroundColor = .red
-        
+        button.titleLabel?.numberOfLines = 0
         button.setTitle(nil, for: .normal)
+        button.titleLabel?.textAlignment = .center
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         button.addTarget(self, action: #selector(buttonTap), for: .touchUpInside)
         alpha = 0

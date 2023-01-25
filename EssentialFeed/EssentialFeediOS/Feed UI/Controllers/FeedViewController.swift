@@ -31,11 +31,16 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     public func display(_ viewModel: EssentialFeed.ResourceErrorViewModel) {
         if let message = viewModel.message {
             self.errorView.show(message: message)
-            self.errorView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 44)
         } else {
             self.errorView.hideMessage()
             self.errorView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 0)
         }
+    }
+    
+    public override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        tableView.sizeTableHeaderToFit()
     }
     
     public override func viewDidLoad() {
@@ -81,5 +86,19 @@ public final class FeedViewController: UITableViewController, UITableViewDataSou
     private func cancelCellControllerLoad(forRowAt indexPath: IndexPath) {
         loadingControllers[indexPath]?.cancelLoad()
         loadingControllers[indexPath] = nil
+    }
+}
+
+extension UITableView {
+    func sizeTableHeaderToFit() {
+        guard let header = tableHeaderView else { return }
+
+        let size = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+
+        let needsFrameUpdate = header.frame.height != size.height
+        if needsFrameUpdate {
+            header.frame.size.height = size.height
+            tableHeaderView = header
+        }
     }
 }
