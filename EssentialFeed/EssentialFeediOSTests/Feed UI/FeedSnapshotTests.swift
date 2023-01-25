@@ -11,15 +11,6 @@ import EssentialFeediOS
 
 final class FeedSnapshotTests: XCTestCase {
     
-    func test_emptyList() {
-        let sut = makeSUT()
-        
-        sut.display(emptyFeed())
-        
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light)), named: "EMPTY_FEED_LIGHT")
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark)), named: "EMPTY_FEED_DARK")
-    }
-    
     func test_feedWithContent() {
         let sut = makeSUT()
         
@@ -27,24 +18,6 @@ final class FeedSnapshotTests: XCTestCase {
         
         assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light)), named: "FEED_WITH_CONTENT_LIGHT")
         assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark)), named: "FEED_WITH_CONTENT_DARK")
-    }
-    
-    func test_feedWithErrorMessage() {
-        let sut = makeSUT()
-        
-        sut.display(ResourceErrorViewModel(message: "An error message"))
-        
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light)), named: "FEED_WITH_ERROR_LIGHT")
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark)), named: "FEED_WITH_ERROR_DARK")
-    }
-    
-    func test_feedWithMultilineErrorMessage() {
-        let sut = makeSUT()
-        
-        sut.display(ResourceErrorViewModel(message: "An multiline \nerror message \nis so so so so amazing"))
-        
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light)), named: "FEED_WITH_MULTILINE_ERROR_LIGHT")
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark)), named: "FEED_WITH_MULTILINE_ERROR_DARK")
     }
     
     func test_feedWithFailedImageLoading() {
@@ -66,10 +39,6 @@ final class FeedSnapshotTests: XCTestCase {
         controller.tableView.showsVerticalScrollIndicator = false
         controller.tableView.showsHorizontalScrollIndicator = false
         return controller
-    }
-    
-    private func emptyFeed() -> [FeedImageCellController] {
-        return []
     }
     
     private func feedWithContent() -> [ImageStub] {
