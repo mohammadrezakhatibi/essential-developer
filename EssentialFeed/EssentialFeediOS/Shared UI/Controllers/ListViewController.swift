@@ -9,7 +9,7 @@ import UIKit
 import EssentialFeed
 
 public protocol CellController {
-    func view(in: UITableView) -> UITableViewCell
+    func view(in tableView: UITableView) -> UITableViewCell
     func preload()
     func cancelLoad()
 }
@@ -55,6 +55,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         refreshControl = refreshController?.view
         
         tableView.register(FeedImageCell.self, forCellReuseIdentifier: "FeedImageCell")
+        tableView.register(ImageCommentCell.self, forCellReuseIdentifier: "ImageCommentCell")
         tableView.prefetchDataSource = self
         tableView.tableHeaderView = errorView
         tableView.separatorStyle = .none
