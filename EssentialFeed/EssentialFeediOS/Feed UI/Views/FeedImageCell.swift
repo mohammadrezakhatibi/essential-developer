@@ -122,9 +122,9 @@ public final class FeedImageCell: UITableViewCell {
             .centerYAnchor
             .constraint(equalTo: pinIcon.centerYAnchor)
             .isActive = true
-        locationLabel
+        locationContainer
             .rightAnchor
-            .constraint(equalTo: locationContainer.rightAnchor, constant: -16)
+            .constraint(equalTo: locationLabel.rightAnchor, constant: 16)
             .isActive = true
         locationLabel
             .leftAnchor
@@ -153,9 +153,9 @@ public final class FeedImageCell: UITableViewCell {
             .leadingAnchor
             .constraint(equalTo: descriptionLabelContainer.leadingAnchor, constant: 16)
             .isActive = true
-        descriptionLabel
+        descriptionLabelContainer
             .trailingAnchor
-            .constraint(equalTo: descriptionLabelContainer.trailingAnchor, constant: -16)
+            .constraint(equalTo: descriptionLabel.trailingAnchor, constant: 16)
             .isActive = true
         
         feedImageContainer

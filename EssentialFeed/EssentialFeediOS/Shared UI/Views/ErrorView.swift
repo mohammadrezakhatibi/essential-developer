@@ -56,9 +56,11 @@ public final class ErrorView: UIView {
 private extension UIView {
     func stickToEdge(of parent: UIView, constant: CGFloat = 0) {
         translatesAutoresizingMaskIntoConstraints = false
-        widthAnchor.constraint(equalTo: parent.widthAnchor, constant: constant).isActive = true
-        heightAnchor.constraint(equalTo: parent.heightAnchor, constant: constant).isActive = true
-        centerXAnchor.constraint(equalTo: parent.centerXAnchor).isActive = true
-        centerYAnchor.constraint(equalTo: parent.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalTo: parent.widthAnchor, constant: constant),
+            heightAnchor.constraint(equalTo: parent.heightAnchor, constant: constant),
+            centerXAnchor.constraint(equalTo: parent.centerXAnchor),
+            centerYAnchor.constraint(equalTo: parent.centerYAnchor),
+        ])
     }
 }
