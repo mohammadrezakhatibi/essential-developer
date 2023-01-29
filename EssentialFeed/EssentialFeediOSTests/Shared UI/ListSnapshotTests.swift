@@ -27,6 +27,8 @@ final class ListSnapshotTests: XCTestCase {
         
         assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light)), named: "LIST_WITH_ERROR_LIGHT")
         assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark)), named: "LIST_WITH_ERROR_DARK")
+        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light, contentSize: .extraExtraExtraLarge)), named: "LIST_WITH_ERROR_LIGHT_extraExtraExtraLarge")
+        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark, contentSize: .extraExtraExtraLarge)), named: "LIST_WITH_ERROR_DARK_extraExtraExtraLarge")
     }
     
     func test_listWithMultilineErrorMessage() {
@@ -36,6 +38,8 @@ final class ListSnapshotTests: XCTestCase {
         
         assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light)), named: "LIST_WITH_MULTILINE_ERROR_LIGHT")
         assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark)), named: "LIST_WITH_MULTILINE_ERROR_DARK")
+        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light, contentSize: .extraExtraExtraLarge)), named: "LIST_WITH_MULTILINE_ERROR_LIGHT_extraExtraExtraLarge")
+        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark, contentSize: .extraExtraExtraLarge)), named: "LIST_WITH_MULTILINE_ERROR_DARK_extraExtraExtraLarge")
     }
     
     // MARK: - Helpler

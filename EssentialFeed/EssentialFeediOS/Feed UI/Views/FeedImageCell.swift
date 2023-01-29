@@ -13,7 +13,8 @@ public final class FeedImageCell: UITableViewCell {
     public lazy var locationLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor(red: 180/256, green: 180/256, blue: 180/256, alpha: 1)
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = .preferredFont(forTextStyle: .subheadline)
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -23,8 +24,9 @@ public final class FeedImageCell: UITableViewCell {
         let label = UILabel()
         label.textColor = .black
         label.numberOfLines = 0
+        label.font = .preferredFont(forTextStyle: .body)
+        label.adjustsFontForContentSizeCategory = true
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 15)
         label.textColor = UIColor(red: 88/256, green: 88/256, blue: 88/256, alpha: 1)
         return label
     }()
@@ -32,7 +34,8 @@ public final class FeedImageCell: UITableViewCell {
     public let feedImageContainer = UIView()
     public lazy var pinIcon: UILabel = {
         let pin = UILabel()
-        pin.font = UIFont.systemFont(ofSize: 14)
+        pin.font = .preferredFont(forTextStyle: .subheadline)
+        pin.adjustsFontForContentSizeCategory = true
         pin.text = "📍"
         return pin
     }()

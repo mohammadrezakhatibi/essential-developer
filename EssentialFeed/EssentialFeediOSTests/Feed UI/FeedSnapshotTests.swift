@@ -18,6 +18,9 @@ final class FeedSnapshotTests: XCTestCase {
         
         assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light)), named: "FEED_WITH_CONTENT_LIGHT")
         assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark)), named: "FEED_WITH_CONTENT_DARK")
+        
+        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_LIGHT_extraExtraExtraLarge")
+        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_DARK_extraExtraExtraLarge")
     }
     
     func test_feedWithFailedImageLoading() {
@@ -27,6 +30,8 @@ final class FeedSnapshotTests: XCTestCase {
 
         assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light)), named: "FEED_WITH_FAILED_IMAGE_LOADING_LIGHT")
         assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark)), named: "FEED_WITH_FAILED_IMAGE_LOADING_DARK")
+        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_FAILED_IMAGE_LOADING_LIGHT_extraExtraExtraLarge")
+        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_FAILED_IMAGE_LOADING_DARK_extraExtraExtraLarge")
     }
     
     // MARK: - Helpler

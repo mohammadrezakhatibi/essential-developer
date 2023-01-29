@@ -21,7 +21,8 @@ public final class ErrorView: UIView {
         button.titleLabel?.numberOfLines = 0
         button.setTitle(nil, for: .normal)
         button.titleLabel?.textAlignment = .center
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        button.titleLabel?.font = .preferredFont(forTextStyle: .body)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.addTarget(self, action: #selector(buttonTap), for: .touchUpInside)
         alpha = 0
         
