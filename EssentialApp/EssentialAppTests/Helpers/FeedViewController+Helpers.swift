@@ -60,6 +60,10 @@ extension ListViewController {
         return tableView.numberOfRows(inSection: feedImagesSection)
     }
     
+    func numberOfRenderedCommentsViews() -> Int {
+        return tableView.numberOfRows(inSection: commentsSection)
+    }
+    
     func feedImageView(at row: Int) -> UITableViewCell? {
         guard numberOfRenderedFeedImageViews() > row else {
             return nil
@@ -72,4 +76,30 @@ extension ListViewController {
     private var feedImagesSection: Int {
         return 0
     }
+    
+    private var commentsSection: Int {
+        return 0
+    }
+    
+    func commentMessage(at index: Int) -> String? {
+        return commentsView(at: index)?.descriptionLabel.text
+    }
+    
+    func commentUsername(at index: Int) -> String? {
+        return commentsView(at: index)?.usernameLabel.text
+    }
+    
+    func commentDate(at index: Int) -> String? {
+        return commentsView(at: index)?.dateLabel.text
+    }
+    
+    func commentsView(at row: Int) -> ImageCommentCell? {
+        guard numberOfRenderedCommentsViews() > row else {
+            return nil
+        }
+        let ds = tableView.dataSource
+        let index = IndexPath(row: row, section: commentsSection)
+        return ds?.tableView(tableView, cellForRowAt: index) as? ImageCommentCell
+    }
+
 }

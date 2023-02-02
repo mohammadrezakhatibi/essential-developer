@@ -58,6 +58,11 @@ extension FeedImageCellController: UITableViewDataSource, UITableViewDelegate, U
     private func releaseCellForReuse() {
         cell = nil
     }
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        self.cell = cell as? FeedImageCell
+        delegate.didRequestImage()
+    }
 }
 
 extension FeedImageCellController: ResourceView, ResourceLoadingView, ResourceErrorView {

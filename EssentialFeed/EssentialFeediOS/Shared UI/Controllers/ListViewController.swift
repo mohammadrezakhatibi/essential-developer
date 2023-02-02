@@ -8,20 +8,16 @@
 import UIKit
 import EssentialFeed
 
-public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceErrorView {
+public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceErrorView, ResourceLoadingView {
     
-    private var refreshController: FeedRefreshViewController?
     private(set) public var errorView = ErrorView()
     
     private var loadingControllers = [IndexPath: CellController]()
     
+    public var onRefresh: (() -> Void)?
+    
     private var tableModel = [CellController]() {
         didSet { tableView.reloadData() }
-    }
-        
-    public convenience init(refreshController: FeedRefreshViewController) {
-        self.init()
-        self.refreshController = refreshController
     }
     
     public func display(_ cellControllers: [CellController]) {
@@ -37,6 +33,10 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         }
     }
     
+    public func display(_ viewModel: ResourceLoadingViewModel) {
+        viewModel.isLoading ? refreshControl?.beginRefreshing() : refreshControl?.endRefreshing()
+    }
+    
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -45,12 +45,17 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        refreshControl = refreshController?.view
         
         tableView.prefetchDataSource = self
         tableView.tableHeaderView = errorView
         tableView.separatorStyle = .none
-        refreshController?.refresh()
+        refreshControl = UIRefreshControl()
+        refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
+        refresh()
+    }
+    
+    @objc func refresh() {
+        onRefresh?()
     }
 
     public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -92,6 +97,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         loadingControllers[indexPath] = nil
         return controller
     }
+    
 }
 
 extension UITableView {

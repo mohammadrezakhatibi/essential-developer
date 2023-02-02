@@ -11,7 +11,7 @@ public struct ImageCommentsViewModel {
     public let comments: [ImageCommentViewModel]
 }
 
-public struct ImageCommentViewModel: Equatable {
+public struct ImageCommentViewModel: Hashable {
     public let message: String
     public let date: String
     public let username: String
@@ -32,9 +32,9 @@ public final class ImageCommentPresenter {
     }
     
     public static func map(_ comments: [ImageComment],
-                           currentDate: Date,
-                           calendar: Calendar,
-                           locale: Locale) -> ImageCommentsViewModel {
+                           currentDate: Date = Date(),
+                           calendar: Calendar = .init(identifier: .gregorian),
+                           locale: Locale = Locale(identifier: "en_US")) -> ImageCommentsViewModel {
         
         let formatter = RelativeDateTimeFormatter()
         formatter.calendar = calendar
