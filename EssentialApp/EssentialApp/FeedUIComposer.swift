@@ -5,7 +5,7 @@ import EssentialFeediOS
 public final class FeedUIComposer {
     private init() {}
     
-    public static func feedComposeWith(feedLoader: @escaping () -> RemoteLoader<[FeedImage]>.Publisher, imageLoader:  @escaping (URL) -> FeedImageDataLoader.Publisher) -> ListViewController {
+    public static func feedComposeWith(feedLoader: @escaping () -> RemoteLoader<[FeedImage]>.Publisher, imageLoader:  @escaping (URL) -> FeedImageDataLoader.Publisher, selection: @escaping (FeedImage) -> Void = { _ in }) -> ListViewController {
         let presentationAdapter = LoadResourcePresentationAdapter<[FeedImage], FeedViewAdapter>(loader: { feedLoader().dispatchOnMainQueue() })
         
         let feedController = ListViewController()
@@ -13,7 +13,7 @@ public final class FeedUIComposer {
         feedController.title = FeedPresenter.title
         
         presentationAdapter.presenter = LoadResourcePresenter(
-            resourceView: FeedViewAdapter(forwardingTo: feedController, imageLoader: { imageLoader($0).dispatchOnMainQueue() }),
+            resourceView: FeedViewAdapter(forwardingTo: feedController, imageLoader: { imageLoader($0).dispatchOnMainQueue() }, selection: selection),
             loadingView:  WeakRefVirtualProxy(feedController),
             errorView: WeakRefVirtualProxy(feedController),
             mapper: FeedPresenter.map)

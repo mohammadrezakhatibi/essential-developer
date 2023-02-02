@@ -13,10 +13,12 @@ public final class FeedImageCellController: NSObject {
     private var cell: FeedImageCell?
     let delegate: FeedImageCellControllerDelegate
     private let viewModel: FeedImageViewModel
+    private let onSelect: () -> Void
     
-    public init(viewModel: FeedImageViewModel, delegate: FeedImageCellControllerDelegate) {
+    public init(viewModel: FeedImageViewModel, delegate: FeedImageCellControllerDelegate, onSelect: @escaping () -> Void) {
         self.delegate = delegate
         self.viewModel = viewModel
+        self.onSelect = onSelect
     }
     
 }
@@ -62,6 +64,10 @@ extension FeedImageCellController: UITableViewDataSource, UITableViewDelegate, U
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         self.cell = cell as? FeedImageCell
         delegate.didRequestImage()
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        onSelect()
     }
 }
 

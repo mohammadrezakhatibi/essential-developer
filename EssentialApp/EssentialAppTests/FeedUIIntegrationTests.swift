@@ -1,10 +1,3 @@
-//
-//  FeedViewControllerTests.swift
-//  EssentialFeediOSTests
-//
-//  Created by Mohammadreza on 11/8/22.
-//
-
 import XCTest
 import UIKit
 import EssentialFeed
@@ -19,6 +12,22 @@ class FeedUIIntegrationTests: XCTestCase {
         sut.loadViewIfNeeded()
         
         XCTAssertEqual(sut.title, feedTitle)
+    }
+    
+    func test_imageSelection_notifiesHandler() {
+        let image0 = makeImage()
+        let image1 = makeImage()
+        var selectedFeedImage = [FeedImage]()
+        let (sut, loader) = makeSUT(selection: { selectedFeedImage.append($0) })
+        
+        sut.loadViewIfNeeded()
+        loader.completeFeedLoading(with: [image0, image1], at: 0)
+        
+        sut.simulateTapOnFeedImage(at: 0)
+        XCTAssertEqual(selectedFeedImage, [image0])
+        
+        sut.simulateTapOnFeedImage(at: 1)
+        XCTAssertEqual(selectedFeedImage, [image0, image1])
     }
     
     func test_loadFeedActions_requestFeedFromLoader() {
@@ -319,9 +328,9 @@ class FeedUIIntegrationTests: XCTestCase {
     
     //MARK: - Helper
     
-    private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
+    private func makeSUT(selection: @escaping (FeedImage) -> Void = { _ in  }, file: StaticString = #filePath, line: UInt = #line) -> (sut: ListViewController, loader: LoaderSpy) {
         let loader = LoaderSpy()
-        let sut = FeedUIComposer.feedComposeWith(feedLoader: loader.loadPublisher, imageLoader: loader.loadImageDataPublisher)
+        let sut = FeedUIComposer.feedComposeWith(feedLoader: loader.loadPublisher, imageLoader: loader.loadImageDataPublisher, selection: selection)
         trackForMemoryLeaks(loader, file: file, line: line)
         trackForMemoryLeaks(sut, file: file, line: line)
         return (sut, loader)

@@ -98,6 +98,11 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
         return controller
     }
     
+    public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let controller = tableModel[indexPath.row]
+        controller.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+    }
+    
 }
 
 extension UITableView {
