@@ -40,6 +40,14 @@ final class FeedAcceptanceTests: XCTestCase {
         XCTAssertEqual(feed.numberOfRenderedFeedImageViews(), 0)
     }
     
+    func test_onFeedImageSelection_displaysComment() {
+         let comments = showCommentsForFirstFeedImage()
+        
+        XCTAssertEqual(comments.numberOfRenderedCommentsViews(), 1)
+        XCTAssertEqual(comments.commentMessage(at: 0), "a message")
+        XCTAssertEqual(comments.commentUsername(at: 0), "a username")
+    }
+    
     // MARK: - Helpers
     
     private func launch(
@@ -53,6 +61,17 @@ final class FeedAcceptanceTests: XCTestCase {
         
         let nav = sut.window?.rootViewController as? UINavigationController
         return nav?.topViewController as! ListViewController
+    }
+    
+    private func showCommentsForFirstFeedImage() -> ListViewController {
+        let feed = launch(httpClient: .online(response), store: .empty)
+        
+        feed.simulateTapOnFeedImage(at: 0)
+        RunLoop.current.run(until: Date())
+        
+        let nav = feed.navigationController
+        return nav?.topViewController as! ListViewController
+        
     }
     
     private class HTTPClientStub: HTTPClient {
@@ -122,6 +141,9 @@ final class FeedAcceptanceTests: XCTestCase {
         switch url.absoluteString {
         case "http://image.com":
             return makeImageData()
+                
+        case "image/2A2AWEWERDFYDFHDFGHDFGHT/comments":
+            return makeCommentsData()
         
         default:
             return makeFeedData()
@@ -135,8 +157,21 @@ final class FeedAcceptanceTests: XCTestCase {
     
     private func makeFeedData() -> Data {
         return try! JSONSerialization.data(withJSONObject: ["items" : [
+            ["id": "2A2AWEWERDFYDFHDFGHDFGHT", "image": "http://image.com"],
             ["id": UUID().uuidString, "image": "http://image.com"],
-            ["id": UUID().uuidString, "image": "http://image.com"],
+        ]])
+    }
+    
+    private func makeCommentsData() -> Data {
+        return try! JSONSerialization.data(withJSONObject: ["items" : [
+            [
+                "id": UUID().uuidString,
+                "message": "a message",
+                "created_at": "2020-05-20T11:24:59+0000",
+                "author": [
+                    "username": "a username"
+                ]
+            ],
         ]])
     }
 }
