@@ -42,9 +42,9 @@ final class FeedAcceptanceTests: XCTestCase {
     
     func test_onFeedImageSelection_displaysComment() {
          let comments = showCommentsForFirstFeedImage()
-        
+
         XCTAssertEqual(comments.numberOfRenderedCommentsViews(), 1)
-        XCTAssertEqual(comments.commentMessage(at: 0), "a message")
+        XCTAssertEqual(comments.commentMessage(at: 0), makeCommentMessage())
         XCTAssertEqual(comments.commentUsername(at: 0), "a username")
     }
     
@@ -138,15 +138,18 @@ final class FeedAcceptanceTests: XCTestCase {
     }
     
     private func makeData(for url: URL) -> Data {
-        switch url.absoluteString {
-        case "http://image.com":
+        switch url.path {
+        case "/image1", "/image2":
             return makeImageData()
                 
-        case "image/2A2AWEWERDFYDFHDFGHDFGHT/comments":
+        case "/essential-feed/v1/image/2239CBA2-CB35-4392-ADC0-24A37D38E010/comments":
             return makeCommentsData()
         
-        default:
+        case "/essential-feed/v1/feed":
             return makeFeedData()
+                
+        default:
+            return Data()
         }
         
     }
@@ -157,8 +160,8 @@ final class FeedAcceptanceTests: XCTestCase {
     
     private func makeFeedData() -> Data {
         return try! JSONSerialization.data(withJSONObject: ["items" : [
-            ["id": "2A2AWEWERDFYDFHDFGHDFGHT", "image": "http://image.com"],
-            ["id": UUID().uuidString, "image": "http://image.com"],
+            ["id": "2239CBA2-CB35-4392-ADC0-24A37D38E010", "image": "http://feed.com/image1"],
+            ["id": UUID().uuidString, "image": "http://feed.com/image2"],
         ]])
     }
     
@@ -166,12 +169,16 @@ final class FeedAcceptanceTests: XCTestCase {
         return try! JSONSerialization.data(withJSONObject: ["items" : [
             [
                 "id": UUID().uuidString,
-                "message": "a message",
+                "message": makeCommentMessage(),
                 "created_at": "2020-05-20T11:24:59+0000",
                 "author": [
                     "username": "a username"
                 ]
             ],
         ]])
+    }
+    
+    private func makeCommentMessage() -> String {
+        "a message"
     }
 }
