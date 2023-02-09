@@ -16,11 +16,11 @@ final class FeedSnapshotTests: XCTestCase {
         
         sut.display(feedWithContent())
         
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light)), named: "FEED_WITH_CONTENT_LIGHT")
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark)), named: "FEED_WITH_CONTENT_DARK")
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .light)), named: "FEED_WITH_CONTENT_LIGHT")
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark)), named: "FEED_WITH_CONTENT_DARK")
         
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_LIGHT_extraExtraExtraLarge")
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_DARK_extraExtraExtraLarge")
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .light, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_LIGHT_extraExtraExtraLarge")
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_CONTENT_DARK_extraExtraExtraLarge")
     }
     
     func test_feedWithFailedImageLoading() {
@@ -28,10 +28,10 @@ final class FeedSnapshotTests: XCTestCase {
 
         sut.display(feedWithFailedImageLoading())
 
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light)), named: "FEED_WITH_FAILED_IMAGE_LOADING_LIGHT")
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark)), named: "FEED_WITH_FAILED_IMAGE_LOADING_DARK")
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .light, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_FAILED_IMAGE_LOADING_LIGHT_extraExtraExtraLarge")
-        assert(snapshot: sut.snapshot(for: .iPhone13Pro(style: .dark, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_FAILED_IMAGE_LOADING_DARK_extraExtraExtraLarge")
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .light)), named: "FEED_WITH_FAILED_IMAGE_LOADING_LIGHT")
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark)), named: "FEED_WITH_FAILED_IMAGE_LOADING_DARK")
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .light, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_FAILED_IMAGE_LOADING_LIGHT_extraExtraExtraLarge")
+        assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark, contentSize: .extraExtraExtraLarge)), named: "FEED_WITH_FAILED_IMAGE_LOADING_DARK_extraExtraExtraLarge")
     }
     
     // MARK: - Helpler
@@ -78,7 +78,7 @@ final class FeedSnapshotTests: XCTestCase {
 private extension ListViewController {
     func display(_ stubs: [ImageStub]) {
         let cells: [CellController] = stubs.map { stub in
-            let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate: stub)
+            let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate: stub, onSelect: {})
             stub.controller = cellController
             return CellController(cellController)
         }
