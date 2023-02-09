@@ -6,7 +6,11 @@ public enum ImageCommentsEndPoint {
     public func url(baseURL: URL) -> URL {
         switch self {
             case let .get(id):
-                return baseURL.appending(path: "/v1/image/\(id)/comments")
+                if #available(iOS 13, *) {
+                    return baseURL.appending(path: "/v1/image/\(id)/comments")
+                } else {
+                    return baseURL.appendingPathExtension("/v1/image/\(id)/comments")
+                }
         }
     }
 }
