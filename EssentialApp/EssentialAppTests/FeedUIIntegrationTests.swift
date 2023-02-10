@@ -3,6 +3,7 @@ import UIKit
 import EssentialFeed
 import EssentialFeediOS
 import EssentialApp
+import Combine
 
 class FeedUIIntegrationTests: XCTestCase {
 
@@ -369,25 +370,27 @@ class FeedUIIntegrationTests: XCTestCase {
         }
     }
     
-    class LoaderSpy: FeedLoader, FeedImageDataLoader {
+    class LoaderSpy: FeedImageDataLoader {
         
         // MARK: FeedLoader
-        private var feedRequests = [(FeedLoader.Result) -> Void]()
+        private var feedRequests = [PassthroughSubject<Paginated<FeedImage>, Error>]()
         
         var loadFeedCallCount: Int {
             return feedRequests.count
         }
         
-        func load(completion: @escaping (FeedLoader.Result) -> Void) {
-            feedRequests.append(completion)
+        func loadPublisher() -> AnyPublisher<Paginated<FeedImage>, Error> {
+            let publisher = PassthroughSubject<Paginated<FeedImage>, Error>()
+            feedRequests.append(publisher)
+            return publisher.eraseToAnyPublisher()
         }
         
         func completeFeedLoading(with feed: [FeedImage] = [],at index: Int = 0) {
-            feedRequests[index](.success(feed))
+            feedRequests[index].send(Paginated(items: feed))
         }
         
         func completeFeedLoadingWithError(at index: Int = 0) {
-            feedRequests[index](.failure(NSError(domain: "", code: 1)))
+            feedRequests[index].send(completion: .failure(anyNSError()))
         }
         
         // MARK: FeedImageDataLoader
