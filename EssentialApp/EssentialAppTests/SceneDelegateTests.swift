@@ -1,15 +1,13 @@
 //
-//  SceneDelegateTests.swift
-//  EssentialAppTests
-//
-//  Created by mohammadreza on 12/16/22.
+//  Copyright © 2019 Essential Developer. All rights reserved.
 //
 
 import XCTest
-@testable import EssentialApp
 import EssentialFeediOS
+@testable import EssentialApp
 
 class SceneDelegateTests: XCTestCase {
+    
     
     func test_configureSession_makesKeyWindowAndVisible() {
         let window = UIWindowSpy()
@@ -22,21 +20,20 @@ class SceneDelegateTests: XCTestCase {
         
         XCTAssertEqual(window.makeKeyAndVisibleCallCount, 1,"Expected window to be key window")
     }
-    
-    func test_sceneWillConnectToSession_configuresRootViewController() {
-        
-        let scene = SceneDelegate()
-        scene.window = UIWindow()
-        
-        scene.configureWindow()
-       
-        let root = scene.window?.rootViewController
-        let rootNavigation = root as? UINavigationController
-        let topController = rootNavigation?.topViewController
-        
-        XCTAssertNotNil(rootNavigation, "Excepted a navigation controller as root, got \(String(describing: root)) instead")
-        XCTAssertTrue(topController is ListViewController, "Excepted a feed view controller as top view controller, got \(String(describing: root)) instead")
-    }
+	
+	func test_configureWindow_configuresRootViewController() {
+		let sut = SceneDelegate()
+		sut.window = UIWindow()
+		
+		sut.configureWindow()
+		
+		let root = sut.window?.rootViewController
+		let rootNavigation = root as? UINavigationController
+		let topController = rootNavigation?.topViewController
+		
+		XCTAssertNotNil(rootNavigation, "Expected a navigation controller as root, got \(String(describing: root)) instead")
+		XCTAssertTrue(topController is ListViewController, "Expected a feed controller as top view controller, got \(String(describing: topController)) instead")
+	}
     
     private class UIWindowSpy: UIWindow {
       var makeKeyAndVisibleCallCount = 0

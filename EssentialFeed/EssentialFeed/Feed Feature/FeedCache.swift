@@ -1,14 +1,11 @@
 //
-//  FeedCache.swift
-//  EssentialFeed
-//
-//  Created by mohammadreza on 12/1/22.
+//  Copyright © 2019 Essential Developer. All rights reserved.
 //
 
 import Foundation
 
 public protocol FeedCache {
-    typealias Result = Swift.Result<Void, Error>
-    
-    func save(_ feed: [FeedImage], completion: @escaping (Result) -> Void)
+	typealias Result = Swift.Result<Void, Error>
+
+	func save(_ feed: [FeedImage], completion: @escaping (Result) -> Void)
 }

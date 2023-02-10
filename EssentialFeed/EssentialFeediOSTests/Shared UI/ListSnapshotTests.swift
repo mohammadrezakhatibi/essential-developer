@@ -1,40 +1,38 @@
-//
-//  ListSnapshotTests.swift
-//  EssentialFeediOSTests
-//
-//  Created by mohammadreza on 1/25/23.
+//	
+// Copyright © 2020 Essential Developer. All rights reserved.
 //
 
 import XCTest
 import EssentialFeediOS
 @testable import EssentialFeed
 
-final class ListSnapshotTests: XCTestCase {
-    
+class ListSnapshotTests: XCTestCase {
+
     func test_emptyList() {
         let sut = makeSUT()
         
         sut.display(emptyList())
-        
-        assert(snapshot: sut.snapshot(for: .iPhone13(style: .light)), named: "EMPTY_LIST_LIGHT")
-        assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark)), named: "EMPTY_LIST_DARK")
+
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "EMPTY_LIST_light")
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "EMPTY_LIST_dark")
     }
-    
-    func test_listWithMultilineErrorMessage() {
+
+    func test_listWithErrorMessage() {
         let sut = makeSUT()
-        
-        sut.display(ResourceErrorViewModel(message: "This is \na multiline \nerror message"))
-        
-        assert(snapshot: sut.snapshot(for: .iPhone13(style: .light)), named: "LIST_WITH_MULTILINE_ERROR_LIGHT")
-        assert(snapshot: sut.snapshot(for: .iPhone13(style: .dark)), named: "LIST_WITH_MULTILINE_ERROR_DARK")
-        assert(snapshot: sut.snapshot(for: .iPhone13(style: .light, contentSize: .extraExtraExtraLarge)), named: "LIST_WITH_MULTILINE_ERROR_LIGHT_extraExtraExtraLarge")
+
+        sut.display(.error(message: "This is a\nmulti-line\nerror message"))
+
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .light)), named: "LIST_WITH_ERROR_MESSAGE_light")
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .dark)), named: "LIST_WITH_ERROR_MESSAGE_dark")
+        assert(snapshot: sut.snapshot(for: .iPhone8(style: .light, contentSize: .extraExtraExtraLarge)), named: "LIST_WITH_ERROR_MESSAGE_light_extraExtraExtraLarge")
     }
-    
-    // MARK: - Helpler
-    
+
+    // MARK: - Helpers
+
     private func makeSUT() -> ListViewController {
         let controller = ListViewController()
         controller.loadViewIfNeeded()
+        controller.tableView.separatorStyle = .none
         controller.tableView.showsVerticalScrollIndicator = false
         controller.tableView.showsHorizontalScrollIndicator = false
         return controller
@@ -43,4 +41,5 @@ final class ListSnapshotTests: XCTestCase {
     private func emptyList() -> [CellController] {
         return []
     }
+
 }

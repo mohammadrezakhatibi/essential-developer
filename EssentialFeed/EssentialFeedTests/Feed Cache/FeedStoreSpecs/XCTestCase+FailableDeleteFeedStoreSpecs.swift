@@ -1,13 +1,20 @@
 //
-//  XCTestCase+FailableDeleteFeedStoreSpecs.swift
-//  EssentialFeedTests
-//
-//  Created by mohammadreza on 11/3/22.
+//  Copyright © 2019 Essential Developer. All rights reserved.
 //
 
-import Foundation
+import XCTest
+import EssentialFeed
 
-protocol FailableDeleteFeedStoreSpecs: FeedStoreSpecs {
-    func test_delete_deliversErrorOnDeletionError()
-    func test_delete_hasNoSideEffectsOnDeletionError()
+extension FailableDeleteFeedStoreSpecs where Self: XCTestCase {
+	func assertThatDeleteDeliversErrorOnDeletionError(on sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+		let deletionError = deleteCache(from: sut)
+		
+		XCTAssertNotNil(deletionError, "Expected cache deletion to fail", file: file, line: line)
+	}
+	
+	func assertThatDeleteHasNoSideEffectsOnDeletionError(on sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+		deleteCache(from: sut)
+		
+		expect(sut, toRetrieve: .success(.none), file: file, line: line)
+	}
 }

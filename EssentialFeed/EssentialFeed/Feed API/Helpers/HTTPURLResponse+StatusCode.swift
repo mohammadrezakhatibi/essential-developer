@@ -1,16 +1,13 @@
 //
-//  File.swift
-//  EssentialFeed
-//
-//  Created by mohammadreza on 11/28/22.
+//  Copyright © 2019 Essential Developer. All rights reserved.
 //
 
 import Foundation
 
 extension HTTPURLResponse {
-    private static var OK_200: Int { return 200 }
+	private static var OK_200: Int { return 200 }
 
-    var isOK: Bool {
-        return statusCode == HTTPURLResponse.OK_200
-    }
+	var isOK: Bool {
+		return statusCode == HTTPURLResponse.OK_200
+	}
 }

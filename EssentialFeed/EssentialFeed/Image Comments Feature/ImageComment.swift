@@ -1,8 +1,5 @@
-//
-//  ImageComment.swift
-//  EssentialFeed
-//
-//  Created by Mohammadreza on 12/31/22.
+//	
+// Copyright © 2020 Essential Developer. All rights reserved.
 //
 
 import Foundation

@@ -1,42 +1,53 @@
-import EssentialFeed
+//	
+// Copyright © 2020 Essential Developer. All rights reserved.
+//
+
 import UIKit
-import EssentialFeediOS
 import Combine
+import EssentialFeed
+import EssentialFeediOS
 
 public final class CommentsUIComposer {
     private init() {}
     
-    public static func commentsComposeWith(commentsLoader: @escaping () -> RemoteLoader<[ImageComment]>.Publisher ) -> ListViewController {
-        let presentationAdapter = LoadResourcePresentationAdapter<[ImageComment], CommentViewAdapter>(
-            loader: { commentsLoader().dispatchOnMainQueue()
-        })
-        let commentController = ListViewController()
-        commentController.onRefresh = presentationAdapter.loadResource
-        commentController.title = ImageCommentPresenter.title
+    private typealias CommentsPresentationAdapter = LoadResourcePresentationAdapter<[ImageComment], CommentsViewAdapter>
+    
+    public static func commentsComposedWith(
+        commentsLoader: @escaping () -> AnyPublisher<[ImageComment], Error>
+    ) -> ListViewController {
+        let presentationAdapter = CommentsPresentationAdapter(loader: commentsLoader)
+        
+        let commentsController = makeCommentsViewController(title: ImageCommentsPresenter.title)
+        commentsController.onRefresh = presentationAdapter.loadResource
         
         presentationAdapter.presenter = LoadResourcePresenter(
-            resourceView: CommentViewAdapter(
-                forwardingTo: commentController),
-            loadingView:  WeakRefVirtualProxy(commentController),
-            errorView: WeakRefVirtualProxy(commentController),
-            mapper: { ImageCommentPresenter.map($0) })
+            resourceView: CommentsViewAdapter(controller: commentsController),
+            loadingView: WeakRefVirtualProxy(commentsController),
+            errorView: WeakRefVirtualProxy(commentsController),
+            mapper: { ImageCommentsPresenter.map($0) })
         
-        return commentController
+        return commentsController
+    }
+
+    private static func makeCommentsViewController(title: String) -> ListViewController {
+        let bundle = Bundle(for: ListViewController.self)
+        let storyboard = UIStoryboard(name: "ImageComments", bundle: bundle)
+        let controller = storyboard.instantiateInitialViewController() as! ListViewController
+        controller.title = title
+        return controller
     }
 }
 
-public final class CommentViewAdapter: ResourceView {
+final class CommentsViewAdapter: ResourceView {
     private weak var controller: ListViewController?
     
-    init(forwardingTo controller: ListViewController) {
+    init(controller: ListViewController) {
         self.controller = controller
     }
     
-    public func display(_ viewModel: ImageCommentsViewModel) {
+    func display(_ viewModel: ImageCommentsViewModel) {
         controller?.display(viewModel.comments.map { viewModel in
-            return CellController(ImageCommentCellController(model: viewModel))
+            CellController(id: viewModel, ImageCommentCellController(model: viewModel))
         })
     }
 }
-
-private struct InvalidImageDataError: Error {   }

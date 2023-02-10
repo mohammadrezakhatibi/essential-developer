@@ -1,8 +1,5 @@
 //
-//  FeedImagePresenter.swift
-//  EssentialFeed
-//
-//  Created by Mohammadreza on 11/27/22.
+//  Copyright © 2019 Essential Developer. All rights reserved.
 //
 
 import Foundation
