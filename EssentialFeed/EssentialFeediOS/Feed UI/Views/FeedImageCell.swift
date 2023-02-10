@@ -211,7 +211,13 @@ public final class FeedImageCell: UITableViewCell {
             .isActive = true
         
         addSubview(containerStackView!)
-        containerStackView?.stickToEdge(of: self)
+        containerStackView?.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            containerStackView!.leadingAnchor.constraint(equalTo: leadingAnchor),
+            trailingAnchor.constraint(equalTo: containerStackView!.trailingAnchor),
+            containerStackView!.topAnchor.constraint(equalTo: topAnchor),
+            bottomAnchor.constraint(equalTo: containerStackView!.bottomAnchor, constant: 16),
+        ])
     }
     
     public override func prepareForReuse() {
