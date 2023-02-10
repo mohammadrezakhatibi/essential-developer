@@ -94,22 +94,26 @@ final class FeedSnapshotTests: XCTestCase {
     }
     
     private func feedWithLoadMoreIndicator() -> [CellController] {
-        let stub = feedWithContent().last!
-        let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate: stub, onSelect: {})
-        stub.controller = cellController
         let loadMore = LoadMoreCellController()
         loadMore.display(ResourceLoadingViewModel(isLoading: true))
-        return [CellController(id: UUID(), cellController), CellController(id: UUID(), loadMore)]
+        return feedWith(loadMore: loadMore)
     }
     
     private func feedWithLoadMoreError() -> [CellController] {
+        let loadMore = LoadMoreCellController()
+        loadMore.display(ResourceErrorViewModel(message: "This is a \nmultiline error"))
+        return feedWith(loadMore: loadMore)
+    }
+    
+    private func feedWith(loadMore: LoadMoreCellController) -> [CellController] {
         let stub = feedWithContent().last!
         let cellController = FeedImageCellController(viewModel: stub.viewModel, delegate: stub, onSelect: {})
         stub.controller = cellController
         
-        let loadMore = LoadMoreCellController()
-        loadMore.display(ResourceErrorViewModel(message: "This is a \nmultiline error"))
-        return [CellController(id: UUID(), cellController), CellController(id: UUID(), loadMore)]
+        return [
+            CellController(id: UUID(), cellController),
+            CellController(id: UUID(), loadMore)
+        ]
     }
 }
 
