@@ -1,17 +1,12 @@
 //
-//  FeedImageViewModel.swift
-//  EssentialFeed
+//  Copyright © 2019 Essential Developer. All rights reserved.
 //
-//  Created by Mohammadreza on 11/27/22.
-//
-
-import Foundation
 
 public struct FeedImageViewModel {
-    public let description: String?
-    public let location: String?
-    
-    public var hasLocation: Bool {
-        return location != nil
-    }
+	public let description: String?
+	public let location: String?
+	
+	public var hasLocation: Bool {
+		return location != nil
+	}
 }

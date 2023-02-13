@@ -1,15 +1,11 @@
-//
-//  ImageCommentCellController.swift
-//  EssentialFeediOS
-//
-//  Created by mohammadreza on 1/25/23.
+//	
+// Copyright © 2020 Essential Developer. All rights reserved.
 //
 
 import UIKit
 import EssentialFeed
 
 public class ImageCommentCellController: NSObject, UITableViewDataSource {
-    
     private let model: ImageCommentViewModel
     
     public init(model: ImageCommentViewModel) {
@@ -21,11 +17,10 @@ public class ImageCommentCellController: NSObject, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        tableView.register(for: ImageCommentCell.self)
         let cell: ImageCommentCell = tableView.dequeueReusableCell()
-        cell.descriptionLabel.text = model.message
-        cell.dateLabel.text = model.date
+        cell.messageLabel.text = model.message
         cell.usernameLabel.text = model.username
+        cell.dateLabel.text = model.date
         return cell
     }
 }

@@ -1,13 +1,20 @@
 //
-//  XCTestCase+FailableInsertFeedStoreSpecs.swift
-//  EssentialFeedTests
-//
-//  Created by mohammadreza on 11/3/22.
+//  Copyright © 2019 Essential Developer. All rights reserved.
 //
 
-import Foundation
+import XCTest
+import EssentialFeed
 
-protocol FailableInsertFeedStoreSpecs: FeedStoreSpecs {
-    func test_insert_deliversErrorOnInsertionError()
-    func test_insert_hasNoSideEffectsOnInsertionError()
+extension FailableInsertFeedStoreSpecs where Self: XCTestCase {
+	func assertThatInsertDeliversErrorOnInsertionError(on sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+		let insertionError = insert((uniqueImageFeed().local, Date()), to: sut)
+		
+		XCTAssertNotNil(insertionError, "Expected cache insertion to fail with an error", file: file, line: line)
+	}
+	
+	func assertThatInsertHasNoSideEffectsOnInsertionError(on sut: FeedStore, file: StaticString = #filePath, line: UInt = #line) {
+		insert((uniqueImageFeed().local, Date()), to: sut)
+		
+		expect(sut, toRetrieve: .success(.none), file: file, line: line)
+	}
 }

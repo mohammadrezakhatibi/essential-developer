@@ -1,8 +1,5 @@
 //
-//  UIView+TestHelpers.swift
-//  EssentialAppTests
-//
-//  Created by Mohammadreza on 12/17/22.
+//  Copyright © 2020 Essential Developer. All rights reserved.
 //
 
 import UIKit

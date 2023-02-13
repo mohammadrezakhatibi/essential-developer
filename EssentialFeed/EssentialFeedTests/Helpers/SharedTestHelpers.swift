@@ -1,22 +1,19 @@
 //
-//  SharedTestHelpers.swift
-//  EssentialFeedTests
-//
-//  Created by Mohammadreza on 10/29/22.
+//  Copyright © 2019 Essential Developer. All rights reserved.
 //
 
 import Foundation
 
-func anyURL() -> URL {
-    return URL(string: "http://a-url.com")!
+func anyNSError() -> NSError {
+	return NSError(domain: "any error", code: 0)
 }
 
-func anyNSError() -> NSError {
-    return NSError(domain: "an error", code: 1)
+func anyURL() -> URL {
+	return URL(string: "http://any-url.com")!
 }
 
 func anyData() -> Data {
-    return Data("any data".utf8)
+	return Data("any data".utf8)
 }
 
 func makeItemsJSON(_ items: [[String: Any]]) -> Data {
@@ -31,7 +28,6 @@ extension HTTPURLResponse {
 }
 
 extension Date {
-    
     func adding(seconds: TimeInterval) -> Date {
         return self + seconds
     }
@@ -39,7 +35,7 @@ extension Date {
     func adding(minutes: Int, calendar: Calendar = Calendar(identifier: .gregorian)) -> Date {
         return calendar.date(byAdding: .minute, value: minutes, to: self)!
     }
-    
+
     func adding(days: Int, calendar: Calendar = Calendar(identifier: .gregorian)) -> Date {
         return calendar.date(byAdding: .day, value: days, to: self)!
     }

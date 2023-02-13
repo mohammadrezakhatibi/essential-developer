@@ -1,120 +1,103 @@
 //
-//  FeedViewController.swift
-//  EssentialFeediOS
-//
-//  Created by Mohammadreza on 11/8/22.
+//  Copyright © 2019 Essential Developer. All rights reserved.
 //
 
 import UIKit
 import EssentialFeed
 
-public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceErrorView, ResourceLoadingView {
+public final class ListViewController: UITableViewController, UITableViewDataSourcePrefetching, ResourceLoadingView, ResourceErrorView {
+	private(set) public var errorView = ErrorView()
     
-    private(set) public var errorView = ErrorView()
-    
-    private var loadingControllers = [IndexPath: CellController]()
-    
-    public var onRefresh: (() -> Void)?
-    
-    private var tableModel = [CellController]() {
-        didSet { tableView.reloadData() }
-    }
-    
-    public func display(_ cellControllers: [CellController]) {
-        loadingControllers = [:]
-        tableModel = cellControllers
-    }
-    public func display(_ viewModel: EssentialFeed.ResourceErrorViewModel) {
-        if let message = viewModel.message {
-            self.errorView.show(message: message)
-        } else {
-            self.errorView.hideMessage()
-            self.errorView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 0)
+    private lazy var dataSource: UITableViewDiffableDataSource<Int, CellController> = {
+        .init(tableView: tableView) { (tableView, index, controller) in
+            controller.dataSource.tableView(tableView, cellForRowAt: index)
         }
-    }
-    
-    public func display(_ viewModel: ResourceLoadingViewModel) {
-        viewModel.isLoading ? refreshControl?.beginRefreshing() : refreshControl?.endRefreshing()
-    }
-    
-    public override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    }()
 
-        tableView.sizeTableHeaderToFit()
-    }
+	public var onRefresh: (() -> Void)?
+	
+	public override func viewDidLoad() {
+		super.viewDidLoad()
+		
+        configureTableView()
+		refresh()
+	}
     
-    public override func viewDidLoad() {
-        super.viewDidLoad()
+    private func configureTableView() {
+        dataSource.defaultRowAnimation = .fade
+        tableView.dataSource = dataSource
+        tableView.tableHeaderView = errorView.makeContainer()
         
-        tableView.prefetchDataSource = self
-        tableView.tableHeaderView = errorView
-        tableView.separatorStyle = .none
-        refreshControl = UIRefreshControl()
-        refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        refresh()
+        errorView.onHide = { [weak self] in
+            self?.tableView.beginUpdates()
+            self?.tableView.sizeTableHeaderToFit()
+            self?.tableView.endUpdates()
+        }
     }
-    
-    @objc func refresh() {
-        onRefresh?()
-    }
+	
+	public override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
 
-    public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableModel.count
-    }
+		tableView.sizeTableHeaderToFit()
+	}
     
-    public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let ds = cellController(forRowAt: indexPath).dataSource
-        return ds.tableView(tableView, cellForRowAt: indexPath)
-    }
-    
-    public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let dl = removeLoadingController(forRowAt: indexPath)?.delegate
-        dl?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
-    }
-    
-    public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
-        indexPaths.forEach { indexPath in
-            let dsp = cellController(forRowAt: indexPath).dataSourcePrefetching
-            dsp?.tableView(tableView, prefetchRowsAt: [indexPath])
+    public override func traitCollectionDidChange(_ previous: UITraitCollection?) {
+        if previous?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
+            tableView.reloadData()
         }
     }
-    
-    public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
-        indexPaths.forEach { indexPath in
-            let dsp = removeLoadingController(forRowAt: indexPath)?.dataSourcePrefetching
-            dsp?.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
+	
+	@IBAction private func refresh() {
+        onRefresh?()
+	}
+	
+    public func display(_ sections: [CellController]...) {
+        var snapshot = NSDiffableDataSourceSnapshot<Int, CellController>()
+        sections.enumerated().forEach { section, cellControllers in
+            snapshot.appendSections([section])
+            snapshot.appendItems(cellControllers, toSection: section)
         }
-    }
-    
-    private func cellController(forRowAt indexPath: IndexPath) -> CellController {
-        let controller = tableModel[indexPath.row]
-        loadingControllers[indexPath] = controller
-        return controller
-    }
-    
-    private func removeLoadingController(forRowAt indexPath: IndexPath) -> CellController? {
-        let controller = loadingControllers[indexPath]
-        loadingControllers[indexPath] = nil
-        return controller
-    }
+        dataSource.apply(snapshot)
+	}
+
+	public func display(_ viewModel: ResourceLoadingViewModel) {
+		refreshControl?.update(isRefreshing: viewModel.isLoading)
+	}
+	
+	public func display(_ viewModel: ResourceErrorViewModel) {
+		errorView.message = viewModel.message
+	}
     
     public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let controller = tableModel[indexPath.row]
-        controller.delegate?.tableView?(tableView, didSelectRowAt: indexPath)
+        let dl = cellController(at: indexPath)?.delegate
+        dl?.tableView?(tableView, didSelectRowAt: indexPath)
     }
     
-}
-
-extension UITableView {
-    func sizeTableHeaderToFit() {
-        guard let header = tableHeaderView else { return }
-
-        let size = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-
-        let needsFrameUpdate = header.frame.height != size.height
-        if needsFrameUpdate {
-            header.frame.size.height = size.height
-            tableHeaderView = header
-        }
+    public override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let dl = cellController(at: indexPath)?.delegate
+        dl?.tableView?(tableView, willDisplay: cell, forRowAt: indexPath)
     }
+    
+	public override func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let dl = cellController(at: indexPath)?.delegate
+        dl?.tableView?(tableView, didEndDisplaying: cell, forRowAt: indexPath)
+	}
+	
+	public func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+		indexPaths.forEach { indexPath in
+            let dsp = cellController(at: indexPath)?.dataSourcePrefetching
+            dsp?.tableView(tableView, prefetchRowsAt: [indexPath])
+		}
+	}
+	
+	public func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        indexPaths.forEach { indexPath in
+            let dsp = cellController(at: indexPath)?.dataSourcePrefetching
+            dsp?.tableView?(tableView, cancelPrefetchingForRowsAt: [indexPath])
+        }
+	}
+	
+	private func cellController(at indexPath: IndexPath) -> CellController? {
+        dataSource.itemIdentifier(for: indexPath)
+	}
 }
