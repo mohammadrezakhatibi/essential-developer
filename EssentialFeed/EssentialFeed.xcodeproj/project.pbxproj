@@ -861,8 +861,9 @@
 				D7C21FE0299A275E00E49054 /* FEED_WITH_LOAD_MORE_ERROR_light.png */,
 				D7C21FE1299A275E00E49054 /* FEED_WITH_LOAD_MORE_INDICATOR_dark.png */,
 			);
-			path = snapshots;
-			sourceTree = "<group>";
+			name = snapshots;
+			path = "EssentialFeediOSTests/Feed UI/snapshots";
+			sourceTree = SOURCE_ROOT;
 		};
 		D7C21FEC299A27AB00E49054 /* snapshots */ = {
 			isa = PBXGroup;
@@ -871,8 +872,9 @@
 				D7C21FEE299A27AB00E49054 /* IMAGE_COMMENTS_dark.png */,
 				D7C21FEF299A27AB00E49054 /* IMAGE_COMMENTS_light.png */,
 			);
-			path = snapshots;
-			sourceTree = "<group>";
+			name = snapshots;
+			path = "EssentialFeediOSTests/Image Comments UI/snapshots";
+			sourceTree = SOURCE_ROOT;
 		};
 		D7C21FF3299A281000E49054 /* snapshots */ = {
 			isa = PBXGroup;
@@ -883,8 +885,9 @@
 				D7C21FF7299A281000E49054 /* LIST_WITH_ERROR_MESSAGE_dark.png */,
 				D7C21FF8299A281000E49054 /* EMPTY_LIST_light.png */,
 			);
-			path = snapshots;
-			sourceTree = "<group>";
+			name = snapshots;
+			path = "EssentialFeediOSTests/Shared UI/snapshots";
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
