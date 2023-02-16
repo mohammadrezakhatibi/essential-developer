@@ -14,8 +14,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	private lazy var httpClient: HTTPClient = {
 		URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
 	}()
-    
-    private lazy var logger = Logger(subsystem: "com.essentialdeveloper.EssentialAppCaseStudy", category: "main")
 	
 	private lazy var store: FeedStore & FeedImageDataStore = {
         do {
@@ -25,7 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     .appendingPathComponent("feed-store.sqlite"))
         } catch {
             assertionFailure("Failed to instantiate CoreDate Store with error: \(error.localizedDescription)")
-            logger.fault("Failed to instantiate CoreDate Store with error: \(error.localizedDescription)")
             return NullStore()
         }
 	}()
@@ -119,44 +116,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let localImageLoader = LocalFeedImageDataLoader(store: store)
         return localImageLoader
             .loadImageDataPublisher(from: url)
-            .logCacheMisses(url: url, logger: logger)
-            .fallback(to: { [httpClient, logger] in
+            .fallback(to: { [httpClient] in
                 return httpClient
                     .getPublisher(url: url)
-                    .logErrors(url: url, logger: logger)
-                    .logElapsedTime(url: url, logger: logger)
                     .tryMap(FeedImageDataMapper.map)
                     .caching(to: localImageLoader, using: url)
             })
-    }
-}
-
-extension Publisher {
-    func logCacheMisses(url: URL, logger: Logger) -> AnyPublisher<Output, Failure> {
-        return handleEvents(receiveCompletion: { result in
-            if case .failure = result {
-                logger.trace("Cache miss for url: \(url) ")
-            }
-        }).eraseToAnyPublisher()
-    }
-    
-    func logErrors(url: URL, logger: Logger) -> AnyPublisher<Output, Failure> {
-        return handleEvents(receiveCompletion: { result in
-            if case let .failure(error) = result {
-                logger.trace("Failed to load url: \(url) with error: \(error.localizedDescription)")
-            }
-        }).eraseToAnyPublisher()
-    }
-    
-    func logElapsedTime(url: URL, logger: Logger) -> AnyPublisher<Output, Failure> {
-        var startTime = CACurrentMediaTime()
-        return handleEvents(receiveSubscription: { logger_ in
-            startTime = CACurrentMediaTime()
-            logger.trace("Started loading url: \(url)")
-        },
-        receiveCompletion: { result in
-            let elapsed = CACurrentMediaTime() - startTime
-            logger.trace("Finished loading url: \(url) in \(elapsed) second")
-        }).eraseToAnyPublisher()
     }
 }
