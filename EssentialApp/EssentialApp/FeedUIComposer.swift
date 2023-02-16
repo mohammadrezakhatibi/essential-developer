@@ -1,25 +1,43 @@
 //
-//  FeedUIComposer.swift
-//  EssentialFeediOS
-//
-//  Created by Mohammadreza on 11/12/22.
+//  Copyright © 2019 Essential Developer. All rights reserved.
 //
 
-import EssentialFeed
 import UIKit
+import Combine
+import EssentialFeed
 import EssentialFeediOS
 
 public final class FeedUIComposer {
-    private init() {}
+	private init() {}
+	
+    private typealias FeedPresentationAdapter = LoadResourcePresentationAdapter<Paginated<FeedImage>, FeedViewAdapter>
     
-    public static func feedComposeWith(feedLoader: FeedLoader, imageLoader: FeedImageDataLoader) -> FeedViewController {
-        let presentationAdapter = FeedLoaderPresentationAdapter(feedLoader: MainQueueDispatchDecorator(decoratee: feedLoader))
-        let refreshController = FeedRefreshViewController(delegate: presentationAdapter)
-        let feedController = FeedViewController(refreshController: refreshController)
-        feedController.title = FeedPresenter.title
-        presentationAdapter.presenter = FeedPresenter(feedView: FeedViewAdapter(forwardingTo: feedController, loader: MainQueueDispatchDecorator(decoratee: imageLoader)), loadingView:  WeakRefVirtualProxy(refreshController),
-        errorView: WeakRefVirtualProxy(feedController))
+    public static func feedComposedWith(
+        feedLoader: @escaping () -> AnyPublisher<Paginated<FeedImage>, Error>,
+        imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher,
+        selection: @escaping (FeedImage) -> Void = { _ in }
+    ) -> ListViewController {
+		let presentationAdapter = FeedPresentationAdapter(loader: feedLoader)
+		
+		let feedController = makeFeedViewController(title: FeedPresenter.title)
+        feedController.onRefresh = presentationAdapter.loadResource
         
-        return feedController
-    }
+		presentationAdapter.presenter = LoadResourcePresenter(
+			resourceView: FeedViewAdapter(
+				controller: feedController,
+                imageLoader: imageLoader,
+                selection: selection),
+			loadingView: WeakRefVirtualProxy(feedController),
+			errorView: WeakRefVirtualProxy(feedController))
+		
+		return feedController
+	}
+
+	private static func makeFeedViewController(title: String) -> ListViewController {
+		let bundle = Bundle(for: ListViewController.self)
+		let storyboard = UIStoryboard(name: "Feed", bundle: bundle)
+		let feedController = storyboard.instantiateInitialViewController() as! ListViewController
+		feedController.title = title
+		return feedController
+	}
 }
