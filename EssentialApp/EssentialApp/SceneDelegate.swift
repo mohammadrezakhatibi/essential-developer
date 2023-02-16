@@ -2,6 +2,7 @@
 //  Copyright © 2019 Essential Developer. All rights reserved.
 //
 
+import os
 import UIKit
 import CoreData
 import Combine
@@ -15,10 +16,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}()
 	
 	private lazy var store: FeedStore & FeedImageDataStore = {
-		try! CoreDataFeedStore(
-			storeURL: NSPersistentContainer
-				.defaultDirectoryURL()
-				.appendingPathComponent("feed-store.sqlite"))
+        do {
+            return try CoreDataFeedStore(
+                storeURL: NSPersistentContainer
+                    .defaultDirectoryURL()
+                    .appendingPathComponent("feed-store.sqlite"))
+        } catch {
+            assertionFailure("Failed to instantiate CoreDate Store with error: \(error.localizedDescription)")
+            return NullStore()
+        }
 	}()
 
 	private lazy var localFeedLoader: LocalFeedLoader = {
@@ -108,11 +114,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private func makeLocalImageLoaderWithRemoteFallback(url: URL) -> FeedImageDataLoader.Publisher {
         let localImageLoader = LocalFeedImageDataLoader(store: store)
-
         return localImageLoader
             .loadImageDataPublisher(from: url)
             .fallback(to: { [httpClient] in
-                httpClient
+                return httpClient
                     .getPublisher(url: url)
                     .tryMap(FeedImageDataMapper.map)
                     .caching(to: localImageLoader, using: url)

@@ -2,9 +2,11 @@
 //  Copyright © 2020 Essential Developer. All rights reserved.
 //
 
+import os.log
 import Foundation
 import Combine
 import EssentialFeed
+import UIKit
 
 public extension Paginated {
     
@@ -166,5 +168,35 @@ extension DispatchQueue {
         func schedule(after date: SchedulerTimeType, interval: SchedulerTimeType.Stride, tolerance: SchedulerTimeType.Stride, options: SchedulerOptions?, _ action: @escaping () -> Void) -> Cancellable {
             DispatchQueue.main.schedule(after: date, interval: interval, tolerance: tolerance, options: options, action)
         }
+    }
+}
+
+extension Publisher {
+    func logCacheMisses(url: URL, logger: Logger) -> AnyPublisher<Output, Failure> {
+        return handleEvents(receiveCompletion: { result in
+            if case .failure = result {
+                logger.trace("Cache miss for url: \(url) ")
+            }
+        }).eraseToAnyPublisher()
+    }
+    
+    func logErrors(url: URL, logger: Logger) -> AnyPublisher<Output, Failure> {
+        return handleEvents(receiveCompletion: { result in
+            if case let .failure(error) = result {
+                logger.trace("Failed to load url: \(url) with error: \(error.localizedDescription)")
+            }
+        }).eraseToAnyPublisher()
+    }
+    
+    func logElapsedTime(url: URL, logger: Logger) -> AnyPublisher<Output, Failure> {
+        var startTime = CACurrentMediaTime()
+        return handleEvents(receiveSubscription: { logger_ in
+            startTime = CACurrentMediaTime()
+            logger.trace("Started loading url: \(url)")
+        },
+        receiveCompletion: { result in
+            let elapsed = CACurrentMediaTime() - startTime
+            logger.trace("Finished loading url: \(url) in \(elapsed) second")
+        }).eraseToAnyPublisher()
     }
 }
